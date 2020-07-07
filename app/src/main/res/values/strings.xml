@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">РуCленг</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_rating">Тренды</string>
+    <string name="menu_favorites">Избранное</string>
+    <string name="menu_info">Информация</string>
+    <string name="random">Случайно</string>
+    <string name="about_program">О программе</string>
+    <string name="about_developer">О разработчике</string>
+    <string name="make_review">Написать отзыв</string>
+</resources>

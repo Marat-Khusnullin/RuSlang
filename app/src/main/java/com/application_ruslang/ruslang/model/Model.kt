@@ -3,10 +3,9 @@ package com.application_ruslang.ruslang.model
 import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
-import com.application_ruslang.ruslang.SearchFragmentPresenter
+import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 import com.application_ruslang.ruslang.interfaces.ModelInterface
 import com.opencsv.CSVReader
-import com.opencsv.CSVWriter
 import java.io.InputStream
 import java.io.InputStreamReader
 import kotlin.random.Random
@@ -30,6 +29,8 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
         reader = CSVReader(bufReader)
         fullList = reader.readAll()
         fullList.forEach {
+            it[0] = it[0].capitalize()
+            it[1] = it[1].capitalize()
             currentFilteredList.add(
                 Phrase(
                     it[0],

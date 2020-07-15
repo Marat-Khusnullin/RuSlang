@@ -1,16 +1,13 @@
 package com.application_ruslang.ruslang.view
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.*
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
+import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 
 
 class SearchFragment(context: Context) : Fragment(),
@@ -56,7 +54,10 @@ class SearchFragment(context: Context) : Fragment(),
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = linearLayoutManager
 
-        presenter = SearchFragmentPresenter(this)
+        presenter =
+            SearchFragmentPresenter(
+                this
+            )
         presenter?.searchStringUpdated()
         initScrollListener()
 
@@ -83,7 +84,7 @@ class SearchFragment(context: Context) : Fragment(),
 
     override fun updateList(list: MutableList<Phrase?>) {
         if (adapter == null) {
-            adapter = SearchListAdapter(list)
+            adapter = SearchListAdapter(list, activityContext)
             recyclerView?.adapter = adapter
         } else
             adapter?.setList(list)
@@ -101,7 +102,7 @@ class SearchFragment(context: Context) : Fragment(),
                 val linearLayoutManager =
                     recyclerView.layoutManager as LinearLayoutManager?
                 if (!isLoading) {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount - 1 && adapter?.itemCount !=1) {
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount - 1 && adapter?.itemCount != 1) {
                         isLoading = true
                         adapter?.addPhrase(null)
                         Handler().postDelayed({

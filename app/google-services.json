@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "361631920657",
+    "firebase_url": "https://ruslang-bbb69.firebaseio.com",
+    "project_id": "ruslang-bbb69",
+    "storage_bucket": "ruslang-bbb69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361631920657:android:37482a9ebca51ebd58b7b0",
+        "android_client_info": {
+          "package_name": "com.application_ruslang.ruslang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "361631920657-u9aso96qehj998ptmlqdkplflai28nv0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3spY91t7UlpFYifF4lE18ZdF7PMR4LiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "361631920657-u9aso96qehj998ptmlqdkplflai28nv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

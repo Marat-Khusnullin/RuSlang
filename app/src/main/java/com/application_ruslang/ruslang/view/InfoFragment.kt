@@ -1,17 +1,12 @@
 package com.application_ruslang.ruslang.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.R
-import com.application_ruslang.ruslang.SearchFragmentPresenter
 
 class InfoFragment : Fragment(), View.OnClickListener {
 

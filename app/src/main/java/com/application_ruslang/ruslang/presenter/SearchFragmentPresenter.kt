@@ -1,4 +1,4 @@
-package com.application_ruslang.ruslang
+package com.application_ruslang.ruslang.presenter
 
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface

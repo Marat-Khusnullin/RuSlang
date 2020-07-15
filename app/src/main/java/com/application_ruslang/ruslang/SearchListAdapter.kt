@@ -1,17 +1,20 @@
 package com.application_ruslang.ruslang
 
+import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.phrase_item.view.*
+import com.application_ruslang.ruslang.view.PhraseFragment
 
-class SearchListAdapter(var phrases: MutableList<Phrase?>) :
+class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
-
+    private val context = _context
     init {
 
     }
@@ -42,9 +45,16 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>) :
             holder.bind(phrases[position])
             holder.itemView.setOnClickListener {
 
+                (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.slide_in_right)
+                    .add(R.id.container,
+                        PhraseFragment(
+                            phrases[position]
+                        )
+                    ).addToBackStack(null)
+                    .commit()
             }
-        } else {
-
+            val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Regular.ttf")
+            holder.setFont(typeface)
         }
 
     }
@@ -56,11 +66,16 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>) :
         init {
             mName = itemView.findViewById(R.id.tv_phrase_list_name)
             mDefinition = itemView.findViewById(R.id.tv_phrase_list_definition)
-        }
+            }
 
         fun bind(phrase: Phrase?) {
             mName?.text = phrase?.name
             mDefinition?.text = phrase?.definition
+        }
+
+        fun setFont(typeface: Typeface) {
+            //mName?.typeface = typeface
+            //mDefinition?.typeface = typeface
         }
     }
 

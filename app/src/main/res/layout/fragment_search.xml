@@ -9,7 +9,6 @@
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/progress_phrase_load"
         android:background="#FFF"
         android:orientation="vertical">
 

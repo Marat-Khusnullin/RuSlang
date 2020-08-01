@@ -4,4 +4,5 @@ interface SearchFragmentPresenterInterface {
     fun searchStringUpdated()
     fun randomClicked()
     fun lastItemScrolled()
+
 }

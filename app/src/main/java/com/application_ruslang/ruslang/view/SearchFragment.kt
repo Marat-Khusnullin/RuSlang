@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.*
@@ -29,6 +31,7 @@ class SearchFragment(context: Context) : Fragment(),
     private var toolbar: Toolbar? = null
     private var random: Button? = null
     private var isLoading: Boolean = false
+    private var newPhrase: ImageButton? = null
 
     init {
         activityContext = context
@@ -49,6 +52,7 @@ class SearchFragment(context: Context) : Fragment(),
         recyclerView = getView()?.findViewById(R.id.recycler_view)
         toolbar = getView()?.findViewById(R.id.toolbar_search)
         random = getView()?.findViewById(R.id.btn_random)
+        newPhrase = getView()?.findViewById(R.id.ib_new_phrase)
 
         val linearLayoutManager = LinearLayoutManager(App.applicationContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -74,6 +78,16 @@ class SearchFragment(context: Context) : Fragment(),
 
         random?.setOnClickListener {
             presenter?.randomClicked()
+        }
+
+        newPhrase?.setOnClickListener {
+            (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.fragment_from_bottom, R.animator.fragment_remove)
+                .add(
+                    R.id.container,
+                    NewPhraseFragment()
+                ).addToBackStack(null)
+                .commit()
         }
 
     }

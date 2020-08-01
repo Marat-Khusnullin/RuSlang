@@ -45,7 +45,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
             holder.bind(phrases[position])
             holder.itemView.setOnClickListener {
 
-                (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.slide_in_right)
+                (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove)
                     .add(R.id.container,
                         PhraseFragment(
                             phrases[position]

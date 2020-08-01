@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.application_ruslang.ruslang.view.FavoritesFragment
 import com.application_ruslang.ruslang.view.InfoFragment
 import com.application_ruslang.ruslang.view.PopularFragment
 import com.application_ruslang.ruslang.view.SearchFragment
@@ -38,13 +39,17 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.action_rating -> {
-                      var a =  PopularFragment()
+                        var a = PopularFragment()
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.container, a)
                             .commit()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.action_favorites -> {
+                        var a = FavoritesFragment()
+                        supportFragmentManager.beginTransaction()
+                            .add(R.id.container, a)
+                            .commit()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.action_info -> {
@@ -61,5 +66,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /*override fun onBackPressed() {
+        //super.onBackPressed()
+        var fragment = supportFragmentManager.findFragmentById(R.id.container)
+        if (fragment != null) {
+            supportFragmentManager.beginTransaction().remove(fragment).setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove).commit()
+        }*/
+
 
 }
+
+
+

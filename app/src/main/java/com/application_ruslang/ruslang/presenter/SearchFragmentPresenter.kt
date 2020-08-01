@@ -42,4 +42,6 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
 
+
+
 }

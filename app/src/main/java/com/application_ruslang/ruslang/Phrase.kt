@@ -1,45 +1,19 @@
 package com.application_ruslang.ruslang
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class Phrase {
-
-    var name: String? = null
-    var definition: String? = null
-    var type: String? = null
-    var group: String? = null
-    var examples: String? = null
-    var hashtags: String? = null
-    var origin: String? = null
-    var synonyms: String? = null
-    var id: String? = null
-    var guid: String? = null
-    var rating: Double? = null
-
-    constructor(
-        _name: String,
-        _definition: String,
-        _type: String,
-        _group: String,
-        _examples: String,
-        _hashtags: String,
-        _origin: String,
-        _synonyms: String,
-        _id: String,
-        _guid: String = "",
-        _rating: Double = 0.0
-    ) {
-        name = _name
-        definition = _definition
-        type = _type
-        group = _group
-        examples = _examples
-        hashtags = _hashtags
-        origin = _origin
-        synonyms = _synonyms
-        id = _id
-        guid = _guid
-        rating = _rating
-    }
-
-
-}
+@Entity
+data class Phrase(
+    @PrimaryKey(autoGenerate = true) var id: Long? = 0,
+    @ColumnInfo(name = "name") var name: String?,
+    @ColumnInfo(name = "definition") var definition: String?,
+    @ColumnInfo(name = "type") var type: String?,
+    @ColumnInfo(name = "group") var group: String?,
+    @ColumnInfo(name = "examples") var examples: String?,
+    @ColumnInfo(name = "hashtags") var hashtags: String?,
+    @ColumnInfo(name = "origin") var origin: String?,
+    @ColumnInfo(name = "synonyms") var synonyms: String?,
+    @ColumnInfo(name = "rating") var rating: Double?
+)

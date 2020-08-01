@@ -1,15 +1,18 @@
 package com.application_ruslang.ruslang.model
 
 import android.util.Log
-import com.application_ruslang.ruslang.POKOPhrase
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-class FirebaseModel(var presenter: PopularFragmentPresenter) {
+class FirebaseModel() {
     private val db: FirebaseFirestore
+    var presenterr: PopularFragmentPresenter? = null
 
+    constructor(presenter: PopularFragmentPresenter) : this() {
+        presenterr = presenter
+    }
     init {
         db = FirebaseFirestore.getInstance()
 
@@ -37,7 +40,7 @@ class FirebaseModel(var presenter: PopularFragmentPresenter) {
 
             for (document in it) {
                 list.add(
-                    Phrase(
+                    Phrase(0,
                         document["name"].toString(),
                         document["definition"].toString(),
                         document["type"].toString(),
@@ -46,16 +49,21 @@ class FirebaseModel(var presenter: PopularFragmentPresenter) {
                         document["hashtags"].toString(),
                         document["origin"].toString(),
                         document["synonyms"].toString(),
-                        document["id"].toString()
+                        0.0
                     )
                 )
                 Log.d("ELEMENTS", document["name"].toString() + " " + document["id"])
             }
-        presenter.loadList(list)
+        presenterr?.loadList(list)
         }.addOnFailureListener {
 
         }
 
+    }
 
+    fun addPhrase(phrase: Phrase) {
+        db.collection("suggested").add(phrase).addOnSuccessListener {
+
+        }
     }
 }

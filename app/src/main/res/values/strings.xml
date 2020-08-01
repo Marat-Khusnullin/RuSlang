@@ -9,4 +9,7 @@
     <string name="about_program">О программе</string>
     <string name="about_developer">О разработчике</string>
     <string name="make_review">Написать отзыв</string>
+    <string name="new_phrase">Добавить слово</string>
+    <string name="done">Готово</string>
+    <string name="cancel">Отмена</string>
 </resources>

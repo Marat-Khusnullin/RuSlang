@@ -13,6 +13,15 @@ interface PhraseDao {
     @Query("SELECT * FROM phrase WHERE name LIKE :first LIMIT 1")
     fun findByName(first: String): Phrase
 
+    @Query("SELECT * FROM phrase WHERE name LIKE :string || '%'")
+    fun findFilteredByName(string: String): List<Phrase>
+
+    @Query("SELECT COUNT(*) FROM phrase")
+    fun getPhrasesCount(): Long
+
+    @Query("SELECT * FROM phrase WHERE id LIKE :id")
+    fun findById(id: Long): Phrase
+
     @Update
     fun updatePhrase(phrase: Phrase)
 

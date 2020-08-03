@@ -1,5 +1,6 @@
 package com.application_ruslang.ruslang.model
 
+import android.content.Intent
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -7,8 +8,11 @@ import com.application_ruslang.ruslang.*
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 import com.application_ruslang.ruslang.interfaces.ModelInterface
 import com.opencsv.CSVReader
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import java.io.*
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 
 class Model(presenter: SearchFragmentPresenter) : ModelInterface {
@@ -18,7 +22,7 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
     var currentFilter: String = ""
     var currentFilteredList = mutableListOf<Phrase>()
 
-    //var fullList: List<Array<String>>
+    var fullList: List<Array<String>>? = null
     val currentPresenter: SearchFragmentPresenter
     private var db: AppDatabase? = null
 
@@ -35,15 +39,16 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
             currentFilteredList = db?.phraseDao()?.getAll()!!.toMutableList()
             Log.d("UUU", "" + db!!.phraseDao().getAll().size)
 
+
         }.start()
-        Thread.sleep(5000)
+        Thread.sleep(10000)
 
 
 // код с CSV на всякий случай
-        /*bufReader = InputStreamReader(inpitStream)
+        /*var bufReader = InputStreamReader(inpitStream)
 
-        reader = CSVReader(bufReader)
-        fullList = reader.readAll()
+        var reader = CSVReader(bufReader)
+        var fullList = reader.readAll()
         //var listt = mutableListOf<Phrase>()
         fullList.forEach {
 
@@ -81,6 +86,14 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
 
     fun setSearchString(string: String) {
         currentFilteredList.clear()
+
+        GlobalScope.launch() {
+            currentFilteredList = db!!.phraseDao().findFilteredByName(string).toMutableList()
+            App.applicationContext().sendBroadcast(Intent("1"))
+        }
+        //Thread.sleep(5000)
+        //currentPresenter.filteredListUpdated()
+        //currentFilteredList = db!!.phraseDao().findFilteredByName(string).toMutableList()
         /*fullList.forEach {
             if (it[0].toLowerCase().contains(string)) {
                 currentFilteredList.add(
@@ -99,39 +112,39 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
                 )
             }
         }*/
-        currentPresenter.filteredListUpdated()
+
+
     }
 
     fun getPhrasesByIndexAndCount(index: Int, count: Int): MutableList<Phrase?> {
         val list = mutableListOf<Phrase?>()
         var lastIndex: Int = index + count
+        var firstIndex = index
 
         if (lastIndex >= currentFilteredList.size) {
             lastIndex = currentFilteredList.size - 1
+            firstIndex = lastIndex - count
+            if(firstIndex < 0 )
+                firstIndex = 0
         }
-        for (i in index..lastIndex)
-            list.add(currentFilteredList[i])
+
+            for (i in index..lastIndex)
+                list.add(currentFilteredList[i])
+
         return list
     }
 
-    fun getRandomPhrase(): Phrase {
-        val index = Random.nextInt(currentFilteredList.size)
+    fun getRandomPhrase(){
+        GlobalScope.launch {
+            currentFilteredList.clear()
+            val index = Random.nextLong(db!!.phraseDao().getPhrasesCount())
 
-        /* val phrase = Phrase(
-             0,
-             phraseString[1],
-             phraseString[2],
-             phraseString[3],
-             phraseString[4],
-             phraseString[5],
-             phraseString[6],
-             phraseString[7],
-             phraseString[8],
-             0.0
-         )*/
-        currentFilteredList.clear()
-        //currentFilteredList.add(phrase)
-        return currentFilteredList[0]
+            val phrase = db!!.phraseDao().findById(index)
+
+            currentFilteredList.add(phrase)
+            App.applicationContext().sendBroadcast(Intent("1"))
+        }
+
     }
 
 }

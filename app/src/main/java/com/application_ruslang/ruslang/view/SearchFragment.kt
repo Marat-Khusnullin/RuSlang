@@ -116,7 +116,7 @@ class SearchFragment(context: Context) : Fragment(),
                 val linearLayoutManager =
                     recyclerView.layoutManager as LinearLayoutManager?
                 if (!isLoading) {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount - 1 && adapter?.itemCount != 1) {
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount - 1 && adapter!!.itemCount > 1) {
                         isLoading = true
                         adapter?.addPhrase(null)
                         Handler().postDelayed({

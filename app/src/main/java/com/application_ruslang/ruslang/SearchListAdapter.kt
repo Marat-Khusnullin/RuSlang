@@ -2,6 +2,7 @@ package com.application_ruslang.ruslang
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
     private val context = _context
+
     init {
 
     }
@@ -35,7 +37,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(phrases[position] != null)
+        return if (phrases[position] != null)
             VIEW_TYPE_ITEM else VIEW_TYPE_LOADING
     }
 
@@ -45,14 +47,17 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
             holder.bind(phrases[position])
             holder.itemView.setOnClickListener {
 
-                (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove)
-                    .add(R.id.container,
+                (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove)
+                    .add(
+                        R.id.container,
                         PhraseFragment(
                             phrases[position]
                         )
                     ).addToBackStack(null)
                     .commit()
             }
+
             val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Regular.ttf")
             holder.setFont(typeface)
         }
@@ -62,15 +67,24 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var mName: TextView? = null
         private var mDefinition: TextView? = null
+        private var favButton: ImageView? = null
+        private var shareButton: ImageView? = null
 
         init {
             mName = itemView.findViewById(R.id.tv_phrase_list_name)
             mDefinition = itemView.findViewById(R.id.tv_phrase_list_definition)
-            }
+            favButton = itemView.findViewById(R.id.iv_favorites)
+            shareButton = itemView.findViewById(R.id.iv_share)
+        }
 
         fun bind(phrase: Phrase?) {
             mName?.text = phrase?.name
             mDefinition?.text = phrase?.definition
+
+            mName?.setOnClickListener {
+                
+            }
+
         }
 
         fun setFont(typeface: Typeface) {
@@ -88,7 +102,8 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     }
 
     fun setList(list: MutableList<Phrase?>) {
-        phrases = list;
+        phrases = list
+        Log.d("QWE", "SET LIST")
         notifyDataSetChanged()
     }
 

@@ -1,5 +1,12 @@
 package com.application_ruslang.ruslang.presenter
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
 import com.application_ruslang.ruslang.model.Model
@@ -11,6 +18,17 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     var currentIndex: Int = 0
     var model: Model =
         Model(this)
+
+
+    init {
+       val broadcastReceiver = object : BroadcastReceiver() {
+           override fun onReceive(p0: Context?, p1: Intent?) {
+               //Log.d("QW", "!!!!")
+               filteredListUpdated()
+           }
+       }
+        App.applicationContext().registerReceiver(broadcastReceiver, IntentFilter("1"))
+    }
 
     override fun searchStringUpdated() {
         currentIndex = 0
@@ -32,7 +50,9 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
     override fun randomClicked() {
-        view.updateList(mutableListOf(model.getRandomPhrase()))
+        currentIndex = 0
+        model.getRandomPhrase()
+        //view.updateList(mutableListOf(model.getRandomPhrase()))
     }
 
     override fun lastItemScrolled() {

@@ -9,9 +9,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.view.PhraseFragment
 
-class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
+class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, var presenter: SearchFragmentPresenterInterface?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
@@ -57,6 +58,10 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
                     ).addToBackStack(null)
                     .commit()
             }
+            holder.favButton?.setOnClickListener() {
+                presenter?.addToFavorite(phrases[position])
+                Log.d("Debuggg", "Fav Button Clicked")
+            }
 
             val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Regular.ttf")
             holder.setFont(typeface)
@@ -67,8 +72,8 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
     class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var mName: TextView? = null
         private var mDefinition: TextView? = null
-        private var favButton: ImageView? = null
-        private var shareButton: ImageView? = null
+         var favButton: ImageView? = null
+         var shareButton: ImageView? = null
 
         init {
             mName = itemView.findViewById(R.id.tv_phrase_list_name)
@@ -80,10 +85,6 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?) :
         fun bind(phrase: Phrase?) {
             mName?.text = phrase?.name
             mDefinition?.text = phrase?.definition
-
-            mName?.setOnClickListener {
-                
-            }
 
         }
 

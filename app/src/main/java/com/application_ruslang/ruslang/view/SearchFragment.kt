@@ -98,7 +98,7 @@ class SearchFragment(context: Context) : Fragment(),
 
     override fun updateList(list: MutableList<Phrase?>) {
         if (adapter == null) {
-            adapter = SearchListAdapter(list, activityContext)
+            adapter = SearchListAdapter(list, activityContext, presenter)
             recyclerView?.adapter = adapter
         } else
             adapter?.setList(list)

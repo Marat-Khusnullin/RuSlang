@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.application_ruslang.ruslang.*
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 import com.application_ruslang.ruslang.interfaces.ModelInterface
+import com.application_ruslang.ruslang.presenter.FavoritesPresenter
 import com.opencsv.CSVReader
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.*
@@ -15,7 +16,7 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 
-class Model(presenter: SearchFragmentPresenter) : ModelInterface {
+class Model() : ModelInterface {
 
     var inpitStream: InputStream
 
@@ -23,8 +24,14 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
     var currentFilteredList = mutableListOf<Phrase>()
 
     var fullList: List<Array<String>>? = null
-    val currentPresenter: SearchFragmentPresenter
+    var currentPresenter: SearchFragmentPresenter? = null
     private var db: AppDatabase? = null
+    var pr: FavoritesPresenter? = null
+
+
+    constructor(presenter: SearchFragmentPresenter) : this() {
+        currentPresenter = presenter
+    }
 
     init {
         inpitStream =
@@ -81,7 +88,6 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
         }*/
 
 
-        currentPresenter = presenter
     }
 
     fun setSearchString(string: String) {
@@ -124,27 +130,47 @@ class Model(presenter: SearchFragmentPresenter) : ModelInterface {
         if (lastIndex >= currentFilteredList.size) {
             lastIndex = currentFilteredList.size - 1
             firstIndex = lastIndex - count
-            if(firstIndex < 0 )
+            if (firstIndex < 0)
                 firstIndex = 0
         }
 
-            for (i in index..lastIndex)
-                list.add(currentFilteredList[i])
+        for (i in index..lastIndex)
+            list.add(currentFilteredList[i])
 
         return list
     }
 
-    fun getRandomPhrase(){
+    fun getRandomPhrase() {
         GlobalScope.launch {
             currentFilteredList.clear()
             val index = Random.nextLong(db!!.phraseDao().getPhrasesCount())
-
             val phrase = db!!.phraseDao().findById(index)
-
             currentFilteredList.add(phrase)
             App.applicationContext().sendBroadcast(Intent("1"))
         }
+    }
+
+    fun switchFavoriteStatus(phrase: Phrase?) {
+        GlobalScope.launch {
+
+            var b = db?.phraseDao()?.findFavPhraseById(phrase?.id!!)
+            if (b == null) {
+                db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
+            } else {
+                db?.phraseDao()?.deleteFavPhrase(b)
+            }
+        }
+    }
+
+    fun getFavoritesPhrases() {
+        GlobalScope.launch {
+            var list = db?.phraseDao()?.getFavoritePhrases()
+            val intent = Intent("2")
+
+        }
 
     }
+
+
 
 }

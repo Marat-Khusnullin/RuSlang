@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.application_ruslang.ruslang.App
+import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
 import com.application_ruslang.ruslang.model.Model
@@ -61,7 +62,9 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
         view.loadExtraPhrases(list)
     }
 
-
+    override fun addToFavorite(phrase: Phrase?) {
+        model.switchFavoriteStatus(phrase)
+    }
 
 
 }

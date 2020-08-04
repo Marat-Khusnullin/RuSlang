@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.FavoritesListAdapter
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
@@ -33,6 +35,10 @@ class FavoritesFragment() : Fragment() {
         recyclerView = view.findViewById(R.id.rv_favorites)
         presenter = FavoritesPresenter(this)
         recyclerView?.adapter = adapter
+
+        val linearLayoutManager = LinearLayoutManager(App.applicationContext())
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView?.layoutManager = linearLayoutManager
         presenter?.viewIsReady()
 
 

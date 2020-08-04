@@ -15,17 +15,19 @@ class FavoritesPresenter(var view: FavoritesFragment) {
     var model: Model
     init {
         model = Model()
-        /*val broadcastReceiver = object : BroadcastReceiver() {
+        model.pr = this
+        val broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, p1: Intent?) {
                 //Log.d("QW", "!!!!")
 
             }
         }
-        App.applicationContext().registerReceiver(broadcastReceiver, IntentFilter("2"))*/
+        App.applicationContext().registerReceiver(broadcastReceiver, IntentFilter("2"))
     }
 
     fun viewIsReady() {
         model.getFavoritesPhrases()
+
     }
 
     fun setList(list: List<Phrase>) {

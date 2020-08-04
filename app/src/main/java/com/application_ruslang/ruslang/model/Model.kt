@@ -1,6 +1,8 @@
 package com.application_ruslang.ruslang.model
 
 import android.content.Intent
+import android.provider.Contacts
+import android.provider.Contacts.Intents.UI
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -18,12 +20,8 @@ import kotlin.random.nextInt
 
 class Model() : ModelInterface {
 
-    var inpitStream: InputStream
-
-    var currentFilter: String = ""
     var currentFilteredList = mutableListOf<Phrase>()
 
-    var fullList: List<Array<String>>? = null
     var currentPresenter: SearchFragmentPresenter? = null
     private var db: AppDatabase? = null
     var pr: FavoritesPresenter? = null
@@ -34,21 +32,17 @@ class Model() : ModelInterface {
     }
 
     init {
-        inpitStream =
-            App.applicationContext().resources.openRawResource(
-                R.raw.teenslang_appwords
-            )
-        Thread {
+        GlobalScope.launch {
             db = Room.databaseBuilder(
                 App.applicationContext(),
                 AppDatabase::class.java, "phrases"
             ).createFromAsset("databases/phrases").build()
             currentFilteredList = db?.phraseDao()?.getAll()!!.toMutableList()
-            Log.d("UUU", "" + db!!.phraseDao().getAll().size)
+            withContext(Dispatchers.Main) {
+                currentPresenter?.filteredListUpdated()
+            }
 
-
-        }.start()
-        Thread.sleep(10000)
+        }
 
 
 // код с CSV на всякий случай
@@ -94,32 +88,16 @@ class Model() : ModelInterface {
         currentFilteredList.clear()
 
         GlobalScope.launch() {
-            currentFilteredList = db!!.phraseDao().findFilteredByName(string).toMutableList()
-            App.applicationContext().sendBroadcast(Intent("1"))
-        }
-        //Thread.sleep(5000)
-        //currentPresenter.filteredListUpdated()
-        //currentFilteredList = db!!.phraseDao().findFilteredByName(string).toMutableList()
-        /*fullList.forEach {
-            if (it[0].toLowerCase().contains(string)) {
-                currentFilteredList.add(
-                    Phrase(
-                        0,
-                        it[1],
-                        it[2],
-                        it[3],
-                        it[4],
-                        it[5],
-                        it[6],
-                        it[7],
-                        it[8],
-                        0.0
-                    )
-                )
+            if(string == "") {
+                currentFilteredList = db!!.phraseDao().getAll().toMutableList()
+            } else {
+                currentFilteredList = db!!.phraseDao().findFilteredByName(string).toMutableList()
             }
-        }*/
 
-
+            withContext(Dispatchers.Main) {
+                currentPresenter?.filteredListUpdated()
+            }
+        }
     }
 
     fun getPhrasesByIndexAndCount(index: Int, count: Int): MutableList<Phrase?> {
@@ -146,7 +124,10 @@ class Model() : ModelInterface {
             val index = Random.nextLong(db!!.phraseDao().getPhrasesCount())
             val phrase = db!!.phraseDao().findById(index)
             currentFilteredList.add(phrase)
-            App.applicationContext().sendBroadcast(Intent("1"))
+            withContext(Dispatchers.Main) {
+                currentPresenter?.filteredListUpdated()
+            }
+
         }
     }
 
@@ -165,12 +146,13 @@ class Model() : ModelInterface {
     fun getFavoritesPhrases() {
         GlobalScope.launch {
             var list = db?.phraseDao()?.getFavoritePhrases()
-            val intent = Intent("2")
+            withContext(Dispatchers.Main) {
+                pr?.setList(list!!)
+            }
 
         }
 
     }
-
 
 
 }

@@ -35,7 +35,6 @@ class SearchFragment(context: Context) : Fragment(),
 
     init {
         activityContext = context
-
     }
 
     override fun onCreateView(
@@ -57,22 +56,20 @@ class SearchFragment(context: Context) : Fragment(),
         val linearLayoutManager = LinearLayoutManager(App.applicationContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = linearLayoutManager
-
-        presenter =
-            SearchFragmentPresenter(
-                this
-            )
-        presenter?.searchStringUpdated()
         initScrollListener()
+
+        presenter = SearchFragmentPresenter(this)
+        presenter?.viewIsReady()
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                presenter?.searchStringUpdated()
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 presenter?.searchStringUpdated()
-                return false
+                return true
             }
         })
 
@@ -81,15 +78,8 @@ class SearchFragment(context: Context) : Fragment(),
         }
 
         newPhrase?.setOnClickListener {
-            (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.animator.fragment_from_bottom, R.animator.fragment_remove)
-                .add(
-                    R.id.container,
-                    NewPhraseFragment()
-                ).addToBackStack(null)
-                .commit()
+            moveToNewPhraseFragment()
         }
-
     }
 
     override fun getSearchString(): String {
@@ -131,6 +121,16 @@ class SearchFragment(context: Context) : Fragment(),
     override fun loadExtraPhrases(list: MutableList<Phrase?>) {
         adapter?.addPhrases(list)
         isLoading = false
+    }
+
+    private fun moveToNewPhraseFragment() {
+        (context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.animator.fragment_from_bottom, R.animator.fragment_remove)
+            .add(
+                R.id.container,
+                NewPhraseFragment()
+            ).addToBackStack(null)
+            .commit()
     }
 
 

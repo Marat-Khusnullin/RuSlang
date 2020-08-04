@@ -7,4 +7,5 @@ interface SearchFragmentPresenterInterface {
     fun randomClicked()
     fun lastItemScrolled()
     fun addToFavorite(phrase: Phrase?)
+    fun viewIsReady()
 }

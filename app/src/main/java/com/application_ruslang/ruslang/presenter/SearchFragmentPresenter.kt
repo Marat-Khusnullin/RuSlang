@@ -17,31 +17,17 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
 
     val OBJ_COUNT = 30
     var currentIndex: Int = 0
-    var model: Model =
-        Model(this)
-
+    var model: Model = Model(this)
 
     init {
-       val broadcastReceiver = object : BroadcastReceiver() {
-           override fun onReceive(p0: Context?, p1: Intent?) {
-               //Log.d("QW", "!!!!")
-               filteredListUpdated()
-           }
-       }
-        App.applicationContext().registerReceiver(broadcastReceiver, IntentFilter("1"))
+
     }
 
     override fun searchStringUpdated() {
         currentIndex = 0
         val searchString = view.getSearchString()
+        model.setSearchString(searchString.toLowerCase())
 
-        if (searchString == "") {
-            val list = model.getPhrasesByIndexAndCount(currentIndex, OBJ_COUNT)
-            view.updateList(list)
-            currentIndex += list.size
-        } else {
-            model.setSearchString(searchString.toLowerCase())
-        }
     }
 
     fun filteredListUpdated() {
@@ -53,7 +39,6 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     override fun randomClicked() {
         currentIndex = 0
         model.getRandomPhrase()
-        //view.updateList(mutableListOf(model.getRandomPhrase()))
     }
 
     override fun lastItemScrolled() {
@@ -64,6 +49,10 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
 
     override fun addToFavorite(phrase: Phrase?) {
         model.switchFavoriteStatus(phrase)
+    }
+
+    override fun viewIsReady() {
+        //filteredListUpdated()
     }
 
 

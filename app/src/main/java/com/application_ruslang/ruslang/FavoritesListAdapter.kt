@@ -1,6 +1,7 @@
 package com.application_ruslang.ruslang
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class FavoritesListAdapter(var context: Context?) : RecyclerView.Adapter<Favorit
 
     fun setList(list: List<Phrase>){
         phrases = list
+        Log.d("QWERTY", "" + list.size)
         notifyDataSetChanged()
     }
 

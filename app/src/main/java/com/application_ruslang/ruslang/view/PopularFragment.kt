@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.*
 import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
+import com.application_ruslang.ruslang.view.adapter.PopularListAdapter
 
 class PopularFragment : Fragment() {
 
@@ -36,7 +37,8 @@ class PopularFragment : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = linearLayoutManager
 
-        adapter = PopularListAdapter()
+        adapter =
+            PopularListAdapter()
         recyclerView?.adapter = adapter
         presenter = PopularFragmentPresenter(this)
 

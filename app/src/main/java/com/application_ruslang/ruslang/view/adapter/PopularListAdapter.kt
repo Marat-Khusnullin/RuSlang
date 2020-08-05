@@ -1,10 +1,12 @@
-package com.application_ruslang.ruslang
+package com.application_ruslang.ruslang.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.R
 
 class PopularListAdapter() : RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
 
@@ -12,7 +14,11 @@ class PopularListAdapter() : RecyclerView.Adapter<PopularListAdapter.ViewHolder>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.phrase_popular_item, parent, false)
+                .inflate(
+                    R.layout.phrase_popular_item,
+                    parent,
+                    false
+                )
         )
     }
 

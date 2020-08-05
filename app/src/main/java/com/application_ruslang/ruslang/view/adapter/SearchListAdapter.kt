@@ -1,4 +1,4 @@
-package com.application_ruslang.ruslang
+package com.application_ruslang.ruslang.view.adapter
 
 import android.content.Context
 import android.graphics.Typeface
@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.view.PhraseFragment
 
@@ -26,10 +28,18 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         if (viewType == VIEW_TYPE_ITEM)
             return SearchViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.phrase_list_item, parent, false)
+                    .inflate(
+                        R.layout.phrase_list_item,
+                        parent,
+                        false
+                    )
             ) else
             return LoadingViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.loading_item, parent, false)
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.loading_item,
+                    parent,
+                    false
+                )
             )
     }
 
@@ -49,7 +59,10 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
             holder.itemView.setOnClickListener {
 
                 (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove)
+                    .setCustomAnimations(
+                        R.animator.ffrmnt_nmtr,
+                        R.animator.fragment_remove
+                    )
                     .add(
                         R.id.container,
                         PhraseFragment(
@@ -58,8 +71,15 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
                     ).addToBackStack(null)
                     .commit()
             }
-            holder.favButton?.setOnClickListener() {
+            holder.favButton.setOnClickListener() {
                 presenter?.addToFavorite(phrases[position])
+                if(phrases[position]?.isFavorite == true) {
+                    holder.favButton.setBackgroundResource(R.drawable.star)
+                    phrases[position]?.isFavorite = false
+                } else {
+                    holder.favButton.setBackgroundResource(R.drawable.fillstar)
+                    phrases[position]?.isFavorite = true
+                }
                 Log.d("Debuggg", "Fav Button Clicked")
             }
 
@@ -70,10 +90,10 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
     }
 
     class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var mName: TextView? = null
-        private var mDefinition: TextView? = null
-         var favButton: ImageView? = null
-         var shareButton: ImageView? = null
+        private var mName: TextView
+        private var mDefinition: TextView
+         var favButton: ImageView
+         var shareButton: ImageView
 
         init {
             mName = itemView.findViewById(R.id.tv_phrase_list_name)
@@ -83,14 +103,19 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         }
 
         fun bind(phrase: Phrase?) {
-            mName?.text = phrase?.name
-            mDefinition?.text = phrase?.definition
+            mName.text = phrase?.name
+            mDefinition.text = phrase?.definition
+            if(phrase?.isFavorite == true) {
+                favButton.setBackgroundResource(R.drawable.fillstar)
+            } else {
+                favButton.setBackgroundResource(R.drawable.star)
+            }
 
         }
 
         fun setFont(typeface: Typeface) {
-            //mName?.typeface = typeface
-            //mDefinition?.typeface = typeface
+            mName.typeface = typeface
+            mDefinition.typeface = typeface
         }
     }
 
@@ -104,7 +129,6 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
 
     fun setList(list: MutableList<Phrase?>) {
         phrases = list
-        Log.d("QWE", "SET LIST")
         notifyDataSetChanged()
     }
 
@@ -113,6 +137,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         list.forEach {
             phrases.add(it)
         }
+      //  Log.d("TATATA", "123123123")
         notifyDataSetChanged()
     }
 

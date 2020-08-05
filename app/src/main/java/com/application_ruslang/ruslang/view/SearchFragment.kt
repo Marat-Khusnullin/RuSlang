@@ -3,6 +3,7 @@ package com.application_ruslang.ruslang.view
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.application_ruslang.ruslang.*
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
+import com.application_ruslang.ruslang.view.adapter.SearchListAdapter
 
 
 class SearchFragment(context: Context) : Fragment(),
@@ -88,7 +90,12 @@ class SearchFragment(context: Context) : Fragment(),
 
     override fun updateList(list: MutableList<Phrase?>) {
         if (adapter == null) {
-            adapter = SearchListAdapter(list, activityContext, presenter)
+            adapter =
+                SearchListAdapter(
+                    list,
+                    activityContext,
+                    presenter
+                )
             recyclerView?.adapter = adapter
         } else
             adapter?.setList(list)

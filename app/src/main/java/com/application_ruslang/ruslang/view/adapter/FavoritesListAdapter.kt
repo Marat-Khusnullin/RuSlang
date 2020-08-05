@@ -1,4 +1,4 @@
-package com.application_ruslang.ruslang
+package com.application_ruslang.ruslang.view.adapter
 
 import android.content.Context
 import android.util.Log
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.view.PhraseFragment
 
 class FavoritesListAdapter(var context: Context?) : RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
@@ -24,7 +26,11 @@ class FavoritesListAdapter(var context: Context?) : RecyclerView.Adapter<Favorit
     ): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.phrase_list_item, parent, false)
+                .inflate(
+                    R.layout.phrase_list_item,
+                    parent,
+                    false
+                )
         )
     }
 
@@ -37,8 +43,12 @@ class FavoritesListAdapter(var context: Context?) : RecyclerView.Adapter<Favorit
         holder.bind(phrases[position])
         holder.itemView.setOnClickListener {
 
-            (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.animator.ffrmnt_nmtr, R.animator.fragment_remove)
-                .add(R.id.container,
+            (context as FragmentActivity).supportFragmentManager.beginTransaction().setCustomAnimations(
+                R.animator.ffrmnt_nmtr,
+                R.animator.fragment_remove
+            )
+                .add(
+                    R.id.container,
                     PhraseFragment(
                         phrases[position]
                     )

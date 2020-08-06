@@ -28,6 +28,9 @@ interface PhraseDao {
     @Query("SELECT COUNT(*) FROM FavPhrase")
     fun getFavCount(): Long
 
+    @Query("SELECT * FROM FavPhrase")
+    fun getFavPhrases(): List<FavPhrase>
+
     @Query("SELECT * FROM FavPhrase WHERE phrase_id LIKE :id")
     fun findFavPhraseById(id: Long): FavPhrase
 

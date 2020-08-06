@@ -3,7 +3,6 @@ package com.application_ruslang.ruslang.view
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.application_ruslang.ruslang.*
+import com.application_ruslang.ruslang.App
+import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
@@ -63,9 +64,10 @@ class SearchFragment(context: Context) : Fragment(),
         presenter = SearchFragmentPresenter(this)
         presenter?.viewIsReady()
 
+        searchView?.setOnClickListener(View.OnClickListener { searchView?.isIconified = false })
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                presenter?.searchStringUpdated()
+                //presenter?.searchStringUpdated()
                 return true
             }
 
@@ -116,9 +118,8 @@ class SearchFragment(context: Context) : Fragment(),
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter!!.itemCount - 1 && adapter!!.itemCount > 1) {
                         isLoading = true
                         adapter?.addPhrase(null)
-                        Handler().postDelayed({
-                            presenter?.lastItemScrolled()
-                        }, 1000)
+                        presenter?.lastItemScrolled()
+
                     }
                 }
             }

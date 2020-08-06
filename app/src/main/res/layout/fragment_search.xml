@@ -79,7 +79,11 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/drawable_searchview"
                 android:padding="-5dp"
-                android:queryHint="Поиск слова..." />
+                android:queryHint="Поиск слова..."
+                android:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                android:queryBackground="@android:color/transparent"
+                 />
 
         </RelativeLayout>
 

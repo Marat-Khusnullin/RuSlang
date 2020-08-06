@@ -16,13 +16,7 @@ class FavoritesPresenter(var view: FavoritesFragment) {
     init {
         model = Model()
         model.pr = this
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(p0: Context?, p1: Intent?) {
-                //Log.d("QW", "!!!!")
 
-            }
-        }
-        App.applicationContext().registerReceiver(broadcastReceiver, IntentFilter("2"))
     }
 
     fun viewIsReady() {
@@ -30,8 +24,12 @@ class FavoritesPresenter(var view: FavoritesFragment) {
 
     }
 
-    fun setList(list: List<Phrase>) {
+    fun setList(list: MutableList<Phrase>) {
         view.updateList(list)
-        Log.d("123123", "" + list.size)
+
+    }
+
+    fun addToFavorite(phrase: Phrase){
+        model.switchFavoriteStatus(phrase)
     }
 }

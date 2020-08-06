@@ -29,12 +29,10 @@ class FavoritesFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter =
-            FavoritesListAdapter(
-                context
-            )
-        recyclerView = view.findViewById(R.id.rv_favorites)
         presenter = FavoritesPresenter(this)
+        adapter = FavoritesListAdapter(context, presenter!!)
+        recyclerView = view.findViewById(R.id.rv_favorites)
+
         recyclerView?.adapter = adapter
 
         val linearLayoutManager = LinearLayoutManager(App.applicationContext())
@@ -45,7 +43,7 @@ class FavoritesFragment() : Fragment() {
 
     }
 
-    fun updateList(list: List<Phrase>) {
+    fun updateList(list: MutableList<Phrase>) {
         adapter?.setList(list)
     }
 

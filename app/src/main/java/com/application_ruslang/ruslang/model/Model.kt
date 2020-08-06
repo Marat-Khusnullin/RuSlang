@@ -99,8 +99,8 @@ class Model() : ModelInterface {
         val list = mutableListOf<Phrase?>()
         GlobalScope.async {
 
-            var lastIndex: Int = 30
-            var index = 0
+            var lastIndex: Int = index + count
+
             if (lastIndex >= currentFilteredList.size) {
                 lastIndex = currentFilteredList.size - 1
 
@@ -110,8 +110,8 @@ class Model() : ModelInterface {
                 var b =db?.phraseDao()?.findFavPhraseById(currentFilteredList[i].id!!)
                 if (b != null) {
                     currentFilteredList[i].isFavorite = true
-                    Log.d("TATATA", "" + currentFilteredList[i].name + " " + currentFilteredList[i].id )
-                    Log.d("TATATA", "" + b.id + " " + b.phraseId )
+                    /*Log.d("TATATA", "" + currentFilteredList[i].name + " " + currentFilteredList[i].id )
+                    Log.d("TATATA", "" + b.id + " " + b.phraseId )*/
                 }
                 list.add(currentFilteredList[i])
             }
@@ -140,17 +140,23 @@ class Model() : ModelInterface {
             var b = db?.phraseDao()?.findFavPhraseById(phrase?.id!!)
             if (b == null) {
                 db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
+                Log.d("Database", "Phrase " + phrase?.name + " is favorite now!" )
             } else {
                 db?.phraseDao()?.deleteFavPhrase(b)
+                Log.d("Database", "Phrase " + phrase?.name + " deleted" )
             }
         }
     }
 
     fun getFavoritesPhrases() {
         GlobalScope.launch {
-            var list = db?.phraseDao()?.getFavoritePhrases()
+            var favs = db?.phraseDao()?.getFavPhrases()
+            var favorites = mutableListOf<Phrase>()
+            favs?.forEach { favorites.add(db!!.phraseDao().findById(it.phraseId!!)) }
+            //var list: MutableList<Phrase> = db!!.phraseDao().getFavoritePhrases().toMutableList()
+
             withContext(Dispatchers.Main) {
-                pr?.setList(list!!)
+                pr?.setList(favorites)
             }
 
         }

@@ -14,7 +14,11 @@ import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.view.PhraseFragment
 
-class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, var presenter: SearchFragmentPresenterInterface?) :
+class SearchListAdapter(
+    var phrases: MutableList<Phrase?>,
+    _context: Context?,
+    var presenter: SearchFragmentPresenterInterface?
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
@@ -73,7 +77,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
             }
             holder.favButton.setOnClickListener() {
                 presenter?.addToFavorite(phrases[position])
-                if(phrases[position]?.isFavorite == true) {
+                if (phrases[position]?.isFavorite == true) {
                     holder.favButton.setBackgroundResource(R.drawable.star)
                     phrases[position]?.isFavorite = false
                 } else {
@@ -92,8 +96,8 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
     class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var mName: TextView
         private var mDefinition: TextView
-         var favButton: ImageView
-         var shareButton: ImageView
+        var favButton: ImageView
+        var shareButton: ImageView
 
         init {
             mName = itemView.findViewById(R.id.tv_phrase_list_name)
@@ -105,7 +109,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         fun bind(phrase: Phrase?) {
             mName.text = phrase?.name
             mDefinition.text = phrase?.definition
-            if(phrase?.isFavorite == true) {
+            if (phrase?.isFavorite == true) {
                 favButton.setBackgroundResource(R.drawable.fillstar)
             } else {
                 favButton.setBackgroundResource(R.drawable.star)
@@ -114,7 +118,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         }
 
         fun setFont(typeface: Typeface) {
-            mName.typeface = typeface
+            //mName.typeface = typeface
             mDefinition.typeface = typeface
         }
     }
@@ -137,7 +141,7 @@ class SearchListAdapter(var phrases: MutableList<Phrase?>, _context: Context?, v
         list.forEach {
             phrases.add(it)
         }
-      //  Log.d("TATATA", "123123123")
+        //  Log.d("TATATA", "123123123")
         notifyDataSetChanged()
     }
 

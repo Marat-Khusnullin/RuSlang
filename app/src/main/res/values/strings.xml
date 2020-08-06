@@ -12,4 +12,5 @@
     <string name="new_phrase">Добавить слово</string>
     <string name="done">Готово</string>
     <string name="cancel">Отмена</string>
+    <string name="back">Назад</string>
 </resources>

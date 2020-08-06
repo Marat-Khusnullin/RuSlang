@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -16,14 +18,13 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
 
     private var name: TextView? = null
     private var definition: TextView? = null
-    private var type: TextView? = null
-    private var group: TextView? = null
     private var examples: TextView? = null
     private var hashtags: TextView? = null
     private var origin: TextView? = null
     private var synonyms: TextView? = null
-    private var toolbar: Toolbar? = null
-    private var toolbarPhraseName: TextView? = null
+    private var back: Button? = null
+    private var share: ImageButton? = null
+    var views = mutableListOf<TextView?>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,32 +38,43 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         name = view.findViewById(R.id.tv_phrase_name)
+        views.add(name)
         definition = view.findViewById(R.id.tv_phrase_definition)
-        type = view.findViewById(R.id.tv_phrase_type)
-        group = view.findViewById(R.id.tv_phrase_group)
+        views.add(definition)
         examples = view.findViewById(R.id.tv_phrase_examples)
+        views.add(examples)
         hashtags = view.findViewById(R.id.tv_phrase_hashtags)
+        views.add(hashtags)
         origin = view.findViewById(R.id.tv_phrase_origin)
+        views.add(origin)
         synonyms = view.findViewById(R.id.tv_phrase_synonyms)
-        toolbar = view.findViewById(R.id.toolbar_phrase)
-        toolbarPhraseName = view.findViewById(R.id.tv_toolbar_phrase_name)
+        views.add(synonyms)
 
-        toolbarPhraseName?.text = phrase?.name
+        back = view.findViewById(R.id.btn_back)
+        share = view.findViewById(R.id.ib_share)
+        val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Italic.ttf")
+
         name?.text = phrase?.name
         definition?.text = phrase?.definition
-        //type?.text = phrase?.type
-        //group?.text = phrase?.group
-        val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Italic.ttf")
-        examples?.typeface = typeface
-        if (phrase?.examples == "")
-            examples?.visibility = View.GONE
-        examples?.text = "примеры: " + phrase?.examples
         hashtags?.text = phrase?.hashtags
-        if (phrase?.origin == "")
-            origin?.visibility = View.GONE
         origin?.text = phrase?.origin
-        //synonyms?.text = phrase?.synonyms
 
+        if (phrase?.examples != "") {
+            examples?.text = "примеры: " + phrase?.examples
+            examples?.typeface = typeface
+        }
+
+        if (phrase?.synonyms != "") {
+            synonyms?.text = "синонимы: " + phrase?.synonyms
+        }
+
+        views.forEach {
+            if (it?.text == "")
+                it.visibility = View.GONE
+        }
+
+        back?.setOnClickListener { activity?.onBackPressed() }
+        share?.setOnClickListener {}
 
     }
 

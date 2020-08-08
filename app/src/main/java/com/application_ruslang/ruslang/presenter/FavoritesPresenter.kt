@@ -13,8 +13,9 @@ import com.application_ruslang.ruslang.view.FavoritesFragment
 class FavoritesPresenter(var view: FavoritesFragment) {
 
     var model: Model
+
     init {
-        model = Model()
+        model = Model.instance
         model.pr = this
 
     }

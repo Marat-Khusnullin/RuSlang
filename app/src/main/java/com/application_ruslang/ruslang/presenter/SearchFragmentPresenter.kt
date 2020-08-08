@@ -17,10 +17,10 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
 
     val OBJ_COUNT = 30
     var currentIndex: Int = 0
-    var model: Model = Model(this)
+    var model: Model = Model.instance
 
     init {
-
+        model.currentPresenter = this
     }
 
     override fun searchStringUpdated() {

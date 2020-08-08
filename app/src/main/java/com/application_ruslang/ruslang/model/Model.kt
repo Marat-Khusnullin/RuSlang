@@ -21,6 +21,10 @@ class Model() : ModelInterface {
     private var db: AppDatabase? = null
     var pr: FavoritesPresenter? = null
 
+    companion object {
+        val instance = Model()
+    }
+
     constructor(presenter: SearchFragmentPresenter) : this() {
         currentPresenter = presenter
     }
@@ -38,45 +42,7 @@ class Model() : ModelInterface {
             }
 
         }
-
-
-// код с CSV на всякий случай
-        /*var bufReader = InputStreamReader(inpitStream)
-
-        var reader = CSVReader(bufReader)
-        var fullList = reader.readAll()
-        //var listt = mutableListOf<Phrase>()
-        fullList.forEach {
-
-            it[0] = it[0].capitalize()
-            it[1] = it[1].capitalize()
-            var a = Phrase(null,it[0],
-                it[1],
-                it[2],
-                it[3],
-                it[4],
-                it[5],
-                it[6],
-                it[7],
-                0.0)
-           // db!!.phraseDao().insertPhrase(a)
-           *//*currentFilteredList.add(
-                Phrase(
-                    0,
-                    it[1],
-                    it[2],
-                    it[3],
-                    it[4],
-                    it[5],
-                    it[6],
-                    it[7],
-                    it[8],
-                    0.0
-                )
-            )*//*
-        }*/
-
-
+        Log.d("Model", "Model initialized")
     }
 
     fun setSearchString(string: String) {
@@ -100,18 +66,14 @@ class Model() : ModelInterface {
         GlobalScope.async {
 
             var lastIndex: Int = index + count
-
             if (lastIndex >= currentFilteredList.size) {
                 lastIndex = currentFilteredList.size - 1
-
             }
 
             for (i in index..lastIndex) {
-                var b =db?.phraseDao()?.findFavPhraseById(currentFilteredList[i].id!!)
+                var b = db?.phraseDao()?.findFavPhraseById(currentFilteredList[i].id!!)
                 if (b != null) {
                     currentFilteredList[i].isFavorite = true
-                    /*Log.d("TATATA", "" + currentFilteredList[i].name + " " + currentFilteredList[i].id )
-                    Log.d("TATATA", "" + b.id + " " + b.phraseId )*/
                 }
                 list.add(currentFilteredList[i])
             }
@@ -140,10 +102,10 @@ class Model() : ModelInterface {
             var b = db?.phraseDao()?.findFavPhraseById(phrase?.id!!)
             if (b == null) {
                 db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
-                Log.d("Database", "Phrase " + phrase?.name + " is favorite now!" )
+                Log.d("Database", "Phrase " + phrase?.name + " is favorite now!")
             } else {
                 db?.phraseDao()?.deleteFavPhrase(b)
-                Log.d("Database", "Phrase " + phrase?.name + " deleted" )
+                Log.d("Database", "Phrase " + phrase?.name + " deleted")
             }
         }
     }

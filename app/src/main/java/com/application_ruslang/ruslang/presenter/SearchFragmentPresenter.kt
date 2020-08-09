@@ -10,11 +10,12 @@ import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
+import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
 import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.model.Model
 
 class SearchFragmentPresenter(private val view: SearchViewInterface) :
-    SearchFragmentPresenterInterface {
+    SearchFragmentPresenterInterface, SubscribablePresenterInterface {
 
     val OBJ_COUNT = 30
     var currentIndex: Int = 0
@@ -23,6 +24,7 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
 
     init {
         model.currentPresenter = this
+        model.subscribeOnPhraseChange(this)
     }
 
     override fun searchStringUpdated() {
@@ -35,7 +37,7 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     fun filteredListUpdated() {
         val list = model.getPhrasesByIndexAndCount(currentIndex, OBJ_COUNT)
         currentIndex += list.size
-        view.updateList(list)
+        view.setList(list)
     }
 
     override fun randomClicked() {
@@ -61,6 +63,10 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
 
     override fun viewIsReady() {
         //filteredListUpdated()
+    }
+
+    override fun phrasesUpdated(list: MutableList<Phrase?>) {
+        view.updateList(list)
     }
 
 

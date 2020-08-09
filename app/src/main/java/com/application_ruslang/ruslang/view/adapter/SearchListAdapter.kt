@@ -142,13 +142,29 @@ class SearchListAdapter(
         list.forEach {
             phrases.add(it)
         }
-        //  Log.d("TATATA", "123123123")
         notifyDataSetChanged()
     }
 
     fun addPhrase(phrase: Phrase?) {
         phrases.add(phrase)
         notifyItemChanged(phrases.lastIndex)
+    }
+
+    fun updatePhrases(list: List<Phrase?>) {
+        list.forEachIndexed { index, phrase ->
+            run {
+                val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
+                if (a >= phrases.size)
+                    phrases[a] = phrase
+                /*phrases.forEachIndexed { index, cPhrase ->
+                    run {
+                        if (cPhrase?.id == phrase?.id)
+                            phrases[index] = phrase
+                    }
+                }*/
+            }
+        }
+        notifyDataSetChanged()
     }
 
 

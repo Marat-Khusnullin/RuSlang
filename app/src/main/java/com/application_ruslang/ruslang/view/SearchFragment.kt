@@ -3,6 +3,7 @@ package com.application_ruslang.ruslang.view
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,7 +91,7 @@ class SearchFragment(context: Context) : Fragment(),
         return searchView?.query.toString()
     }
 
-    override fun updateList(list: MutableList<Phrase?>) {
+    override fun setList(list: MutableList<Phrase?>) {
         if (adapter == null) {
             adapter =
                 SearchListAdapter(
@@ -129,6 +130,11 @@ class SearchFragment(context: Context) : Fragment(),
     override fun loadExtraPhrases(list: MutableList<Phrase?>) {
         adapter?.addPhrases(list)
         isLoading = false
+    }
+
+    override fun updateList(list: MutableList<Phrase?>) {
+        adapter?.updatePhrases(list)
+        Log.d("UPDATING", "МЫ ТУТ")
     }
 
     private fun moveToNewPhraseFragment() {

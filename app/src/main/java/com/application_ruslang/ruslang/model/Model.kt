@@ -19,7 +19,7 @@ class Model() : ModelInterface {
     private var subscribers: MutableList<SubscribablePresenterInterface> = mutableListOf()
     private var currentFilteredList = mutableListOf<Phrase>()
     private var db: AppDatabase? = null
-    
+
     var currentPresenter: SearchFragmentPresenter? = null
 
     var pr: FavoritesPresenter? = null
@@ -108,6 +108,13 @@ class Model() : ModelInterface {
     fun removeFromFavorites(phrase: Phrase?) {
         GlobalScope.launch {
             db?.phraseDao()?.deleteFavPhraseByPhraseId(phrase?.id!!)
+            phrase?.isFavorite = false
+            withContext(Dispatchers.Main) {
+                subscribers.forEach {
+                    it.phrasesUpdated(mutableListOf(phrase))
+                }
+            }
+
             Log.d("Database", "Phrase " + phrase?.name + " deleted")
 
         }
@@ -126,6 +133,10 @@ class Model() : ModelInterface {
 
         }
 
+    }
+
+    fun subscribeOnPhraseChange(presenter: SubscribablePresenterInterface) {
+        subscribers.add(presenter)
     }
 
 

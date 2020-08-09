@@ -7,6 +7,7 @@ import com.application_ruslang.ruslang.AppDatabase
 import com.application_ruslang.ruslang.FavPhrase
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.ModelInterface
+import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
 import com.application_ruslang.ruslang.presenter.FavoritesPresenter
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 import kotlinx.coroutines.*
@@ -15,10 +16,12 @@ import kotlin.random.Random
 
 class Model() : ModelInterface {
 
-    var currentFilteredList = mutableListOf<Phrase>()
-
-    var currentPresenter: SearchFragmentPresenter? = null
+    private var subscribers: MutableList<SubscribablePresenterInterface> = mutableListOf()
+    private var currentFilteredList = mutableListOf<Phrase>()
     private var db: AppDatabase? = null
+    
+    var currentPresenter: SearchFragmentPresenter? = null
+
     var pr: FavoritesPresenter? = null
 
     companion object {
@@ -40,7 +43,6 @@ class Model() : ModelInterface {
             withContext(Dispatchers.Main) {
                 currentPresenter?.filteredListUpdated()
             }
-
         }
         Log.d("Model", "Model initialized")
     }
@@ -96,17 +98,18 @@ class Model() : ModelInterface {
         }
     }
 
-    fun switchFavoriteStatus(phrase: Phrase?) {
+    fun addToFavorites(phrase: Phrase?) {
         GlobalScope.launch {
+            db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
+            Log.d("Database", "Phrase " + phrase?.name + " is favorite now!")
+        }
+    }
 
-            var b = db?.phraseDao()?.findFavPhraseById(phrase?.id!!)
-            if (b == null) {
-                db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
-                Log.d("Database", "Phrase " + phrase?.name + " is favorite now!")
-            } else {
-                db?.phraseDao()?.deleteFavPhrase(b)
-                Log.d("Database", "Phrase " + phrase?.name + " deleted")
-            }
+    fun removeFromFavorites(phrase: Phrase?) {
+        GlobalScope.launch {
+            db?.phraseDao()?.deleteFavPhraseByPhraseId(phrase?.id!!)
+            Log.d("Database", "Phrase " + phrase?.name + " deleted")
+
         }
     }
 

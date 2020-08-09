@@ -34,6 +34,9 @@ interface PhraseDao {
     @Query("SELECT * FROM FavPhrase WHERE phrase_id LIKE :id")
     fun findFavPhraseById(id: Long): FavPhrase
 
+    @Query("DELETE FROM FavPhrase WHERE phrase_id LIKE :id")
+    fun deleteFavPhraseByPhraseId(id: Long)
+
     @Query("DELETE FROM FavPhrase")
     fun clearFavPhraseTable()
 

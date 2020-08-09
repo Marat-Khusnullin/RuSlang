@@ -59,8 +59,7 @@ class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresen
                 .commit()
         }
         holder.favButton.setOnClickListener() {
-            presenter.addToFavorite(phrases[position])
-            holder.favButton.setBackgroundResource(R.drawable.star)
+            presenter.removeFromFavorite(phrases[position])
             phrases.removeAt(position)
             notifyDataSetChanged()
             Log.d("Debuggg", "Fav Button Clicked")

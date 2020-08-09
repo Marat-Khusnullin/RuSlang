@@ -38,7 +38,7 @@ class PopularFragment : Fragment() {
         recyclerView?.layoutManager = linearLayoutManager
 
         adapter =
-            PopularListAdapter()
+            PopularListAdapter(context)
         recyclerView?.adapter = adapter
         presenter = PopularFragmentPresenter(this)
 

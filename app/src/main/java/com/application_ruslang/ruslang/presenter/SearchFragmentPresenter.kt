@@ -10,6 +10,7 @@ import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.interfaces.SearchViewInterface
+import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.model.Model
 
 class SearchFragmentPresenter(private val view: SearchViewInterface) :
@@ -18,6 +19,7 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     val OBJ_COUNT = 30
     var currentIndex: Int = 0
     var model: Model = Model.instance
+    var firebaseModel: FirebaseModel = FirebaseModel.instance
 
     init {
         model.currentPresenter = this
@@ -47,8 +49,14 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
         view.loadExtraPhrases(list)
     }
 
-    override fun addToFavorite(phrase: Phrase?) {
-        model.switchFavoriteStatus(phrase)
+    override fun addToFavorites(phrase: Phrase?) {
+        model.addToFavorites(phrase)
+        firebaseModel.noticeAddingToFavorites(phrase)
+    }
+
+    override fun removeFromFavorites(phrase: Phrase?){
+        model.removeFromFavorites(phrase)
+        firebaseModel.noticeRemovingFromFavorites(phrase)
     }
 
     override fun viewIsReady() {

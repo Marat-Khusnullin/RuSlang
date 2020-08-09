@@ -2,7 +2,9 @@ package com.application_ruslang.ruslang.model
 
 import android.util.Log
 import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.TrendData
 import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -13,6 +15,11 @@ class FirebaseModel() {
     constructor(presenter: PopularFragmentPresenter) : this() {
         presenterr = presenter
     }
+
+    companion object {
+        val instance = FirebaseModel()
+    }
+
     init {
         db = FirebaseFirestore.getInstance()
 
@@ -34,30 +41,32 @@ class FirebaseModel() {
 
     }
 
-    fun loadPopularPhrases(){
-        db.collection("popular").orderBy("rating", Query.Direction.DESCENDING).limit(3).get().addOnSuccessListener {
-            var list = mutableListOf<Phrase>()
+    fun loadPopularPhrases() {
+        db.collection("popular").orderBy("rating", Query.Direction.DESCENDING).limit(3).get()
+            .addOnSuccessListener {
+                var list = mutableListOf<Phrase>()
 
-            for (document in it) {
-                list.add(
-                    Phrase(0,
-                        document["name"].toString(),
-                        document["definition"].toString(),
-                        document["type"].toString(),
-                        document["group"].toString(),
-                        document["examples"].toString(),
-                        document["hashtags"].toString(),
-                        document["origin"].toString(),
-                        document["synonyms"].toString(),
-                        0.0
+                for (document in it) {
+                    list.add(
+                        Phrase(
+                            0,
+                            document["name"].toString(),
+                            document["definition"].toString(),
+                            document["type"].toString(),
+                            document["group"].toString(),
+                            document["examples"].toString(),
+                            document["hashtags"].toString(),
+                            document["origin"].toString(),
+                            document["synonyms"].toString(),
+                            0.0
+                        )
                     )
-                )
-                Log.d("ELEMENTS", document["name"].toString() + " " + document["id"])
-            }
-        presenterr?.loadList(list)
-        }.addOnFailureListener {
+                    Log.d("ELEMENTS", document["name"].toString() + " " + document["id"])
+                }
+                presenterr?.loadList(list)
+            }.addOnFailureListener {
 
-        }
+            }
 
     }
 
@@ -65,5 +74,36 @@ class FirebaseModel() {
         db.collection("suggested").add(phrase).addOnSuccessListener {
 
         }
+    }
+
+    fun loadTrendInfo(phrase: Phrase) {
+
+    }
+
+    fun noticeViewing(phrase: Phrase) {
+        var doc = db.collection("trend").document("" + phrase.id)
+        doc.get().addOnCompleteListener {
+            if (it.result?.exists() == true) {
+                doc.update("monthCount", FieldValue.increment(1))
+            } else {
+                db.collection("trend").document("" + phrase.id).set(TrendData(1, 0))
+            }
+        }
+    }
+
+    fun noticeAddingToFavorites(phrase: Phrase?) {
+        var doc = db.collection("trend").document("" + phrase?.id)
+        doc.get().addOnCompleteListener {
+            if (it.result?.exists() == true) {
+                doc.update("favCount", FieldValue.increment(1))
+            } else {
+                db.collection("trend").document("" + phrase?.id).set(TrendData(0, 1))
+            }
+        }
+    }
+
+    fun noticeRemovingFromFavorites(phrase: Phrase?) {
+        db.collection("trend").document("" + phrase?.id)
+            .update("favCount", FieldValue.increment(-1))
     }
 }

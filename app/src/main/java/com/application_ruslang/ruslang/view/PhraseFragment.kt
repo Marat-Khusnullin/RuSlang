@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.presenter.PhrasePresenter
 
 
 class PhraseFragment(private var phrase: Phrase?) : Fragment() {
@@ -24,7 +25,8 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
     private var synonyms: TextView? = null
     private var back: Button? = null
     private var share: ImageButton? = null
-    var views = mutableListOf<TextView?>()
+    private var views = mutableListOf<TextView?>()
+    private var presenter: PhrasePresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +77,9 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
 
         back?.setOnClickListener { activity?.onBackPressed() }
         share?.setOnClickListener {}
+
+        presenter = PhrasePresenter()
+        phrase?.let { presenter?.viewIsReady(it) }
 
     }
 

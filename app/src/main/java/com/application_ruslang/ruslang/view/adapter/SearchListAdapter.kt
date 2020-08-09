@@ -76,12 +76,13 @@ class SearchListAdapter(
                     .commit()
             }
             holder.favButton.setOnClickListener() {
-                presenter?.addToFavorite(phrases[position])
                 if (phrases[position]?.isFavorite == true) {
                     holder.favButton.setBackgroundResource(R.drawable.star)
+                    presenter?.removeFromFavorites(phrases[position])
                     phrases[position]?.isFavorite = false
                 } else {
                     holder.favButton.setBackgroundResource(R.drawable.fillstar)
+                    presenter?.addToFavorites(phrases[position])
                     phrases[position]?.isFavorite = true
                 }
                 Log.d("Debuggg", "Fav Button Clicked")

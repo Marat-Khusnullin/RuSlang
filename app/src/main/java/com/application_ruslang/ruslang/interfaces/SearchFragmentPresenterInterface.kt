@@ -6,6 +6,7 @@ interface SearchFragmentPresenterInterface {
     fun searchStringUpdated()
     fun randomClicked()
     fun lastItemScrolled()
-    fun addToFavorite(phrase: Phrase?)
+    fun addToFavorites(phrase: Phrase?)
+    fun removeFromFavorites(phrase: Phrase?)
     fun viewIsReady()
 }

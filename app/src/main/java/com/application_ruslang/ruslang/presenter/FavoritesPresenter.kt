@@ -1,21 +1,18 @@
 package com.application_ruslang.ruslang.presenter
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.util.Log
-import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.Phrase
+import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.model.Model
 import com.application_ruslang.ruslang.view.FavoritesFragment
 
 class FavoritesPresenter(var view: FavoritesFragment) {
 
     var model: Model
+    var firebaseModel: FirebaseModel
 
     init {
         model = Model.instance
+        firebaseModel = FirebaseModel.instance
         model.pr = this
 
     }
@@ -30,7 +27,8 @@ class FavoritesPresenter(var view: FavoritesFragment) {
 
     }
 
-    fun addToFavorite(phrase: Phrase){
-        model.switchFavoriteStatus(phrase)
+    fun removeFromFavorite(phrase: Phrase){
+        model.removeFromFavorites(phrase)
+        firebaseModel.noticeRemovingFromFavorites(phrase)
     }
 }

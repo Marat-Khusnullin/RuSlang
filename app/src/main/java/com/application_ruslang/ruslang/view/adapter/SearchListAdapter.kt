@@ -156,12 +156,6 @@ class SearchListAdapter(
                 val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
                 if (a >= phrases.size)
                     phrases[a] = phrase
-                /*phrases.forEachIndexed { index, cPhrase ->
-                    run {
-                        if (cPhrase?.id == phrase?.id)
-                            phrases[index] = phrase
-                    }
-                }*/
             }
         }
         notifyDataSetChanged()

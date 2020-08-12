@@ -45,7 +45,7 @@ class PopularFragment : Fragment() {
         presenter?.viewIsReady()
     }
 
-    fun updateList(list: List<Phrase>){
+    fun updateList(list: List<Phrase?>){
         adapter?.setList(list)
     }
 

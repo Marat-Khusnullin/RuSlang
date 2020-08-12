@@ -7,8 +7,8 @@ interface PhraseDao {
     @Query("SELECT * FROM phrase")
     fun getAll(): List<Phrase>
 
-    @Query("SELECT * FROM phrase WHERE id IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<Phrase>
+    @Query("SELECT * FROM phrase WHERE id IN (:phraseIds)")
+    fun loadAllByIds(phraseIds: IntArray): List<Phrase>
 
     @Query("SELECT * FROM phrase WHERE name LIKE :first LIMIT 1")
     fun findByName(first: String): Phrase

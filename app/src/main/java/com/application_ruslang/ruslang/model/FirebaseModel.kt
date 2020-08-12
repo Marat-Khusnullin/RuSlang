@@ -7,10 +7,13 @@ import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.util.*
 
 class FirebaseModel() {
     private val db: FirebaseFirestore
+    private val model: Model
     var presenterr: PopularFragmentPresenter? = null
+    val POPULAR_PHRASES_COUNT = 10
 
     constructor(presenter: PopularFragmentPresenter) : this() {
         presenterr = presenter
@@ -22,51 +25,69 @@ class FirebaseModel() {
 
     init {
         db = FirebaseFirestore.getInstance()
-
-        /*Log.e("LOL", "DADADA")
-        var a = Phrase("Тест имя 5.0", "тест 2", "тест 3", "тест 4", "тест5", "тест6", "тест7", "тест8", "тест9", _rating = 5.0)
-        db.collection("popular").add(a)
-        a = Phrase("Тест имя 4.0", "тест 2", "тест 3", "тест 4", "тест5", "тест6", "тест7", "тест8", "тест9", _rating = 4.0)
-        db.collection("popular").add(a)
-        a = Phrase("Тест имя 3.0", "тест 2", "тест 3", "тест 4", "тест5", "тест6", "тест7", "тест8", "тест9", _rating = 3.0)
-        db.collection("popular").add(a)
-        a = Phrase("Тест имя 2.0", "тест 2", "тест 3", "тест 4", "тест5", "тест6", "тест7", "тест8", "тест9", _rating = 2.0)
-        db.collection("popular").add(a)
-        a = Phrase("Тест имя 1.0", "тест 2", "тест 3", "тест 4", "тест5", "тест6", "тест7", "тест8", "тест9", _rating = 1.0)
-        db.collection("popular").add(a)*/
-    }
-
-
-    fun increaseRating(phrase: Phrase) {
+        model = Model.instance
 
     }
 
     fun loadPopularPhrases() {
-        db.collection("popular").orderBy("rating", Query.Direction.DESCENDING).limit(3).get()
-            .addOnSuccessListener {
-                var list = mutableListOf<Phrase>()
+        var data = db.collection("trend")
+        var listOfPhrases = mutableListOf<Phrase?>()
+        data.orderBy("totalViews", Query.Direction.DESCENDING).limit(5)
+            data.get().addOnSuccessListener {
+                it.documents.forEach { doc ->
+                    var phrase = model.getPhraseById(doc.id.toLong())
+                    listOfPhrases.add(phrase)
+                    //Log.d("GAGAGA", doc.getLong("totalViews").toString())
+                    //Log.d("ListSize", "" + listOfPhrases.size)
+                    var trendData = TrendData(totalViews = doc.getLong("totalViews"), totalFavs = doc.getLong("totalFavs"))
+                    var months = db.collection("trend").document(doc.id).collection("months")
+                    months.document(Calendar.getInstance().get(Calendar.MONTH).toString()).get().addOnSuccessListener {
+                        trendData.monthViewsCount = it.getLong("monthViewsCount")
+                        trendData.monthFavsCount = it.getLong("monthFavsCount")
 
-                for (document in it) {
-                    list.add(
-                        Phrase(
-                            0,
-                            document["name"].toString(),
-                            document["definition"].toString(),
-                            document["type"].toString(),
-                            document["group"].toString(),
-                            document["examples"].toString(),
-                            document["hashtags"].toString(),
-                            document["origin"].toString(),
-                            document["synonyms"].toString(),
-                            0.0
-                        )
-                    )
-                    Log.d("ELEMENTS", document["name"].toString() + " " + document["id"])
+                    }
+                    months.get().addOnSuccessListener { month ->
+                        month.documents.forEach { doc ->
+                            trendData.monthsViews.set(doc.id.toLong(), doc.getLong("monthViews"))
+
+                        }
+                    }
+
+                    phrase?.trendData = trendData
+                }
+                presenterr?.loadList(listOfPhrases)
+            }
+        /*data.get()
+            .addOnSuccessListener { doc ->
+                val ids = IntArray(5)
+                var list1 = mutableListOf<TrendData>()
+                doc.forEachIndexed { index, queryDocumentSnapshot ->
+                    run {
+                        ids.set(index, queryDocumentSnapshot.id.toInt())
+                        data.document(queryDocumentSnapshot.id).collection("month")
+                            .document(Calendar.getInstance().get(Calendar.MONTH).toString()).get()
+                            .addOnSuccessListener { result ->
+                                list1.add(
+                                    TrendData(
+                                        result?.getLong("monthCount")!!,
+                                        result.getLong("favCount")!!,
+                                        queryDocumentSnapshot.getLong("totalViews")!!,
+                                        queryDocumentSnapshot.getLong("totalFavs")!!
+                                    )
+                                )
+                            }
+
+                    }
+
+                }
+                val list = model.getPhrasesByIds(ids)
+                list.forEachIndexed { index, phrase ->
+                    phrase?.trendData = list1[index]
                 }
                 presenterr?.loadList(list)
             }.addOnFailureListener {
 
-            }
+            }*/
 
     }
 
@@ -77,16 +98,25 @@ class FirebaseModel() {
     }
 
     fun loadTrendInfo(phrase: Phrase) {
-
+        Calendar.getInstance().get(Calendar.MONTH)
     }
 
     fun noticeViewing(phrase: Phrase) {
         var doc = db.collection("trend").document("" + phrase.id)
         doc.get().addOnCompleteListener {
             if (it.result?.exists() == true) {
-                doc.update("monthCount", FieldValue.increment(1))
+                doc.update("totalViews", FieldValue.increment(1))
             } else {
-                db.collection("trend").document("" + phrase.id).set(TrendData(1, 0))
+                doc.set(TrendData(totalViews = 1))
+            }
+            var month = doc.collection("months")
+                .document(Calendar.getInstance().get(Calendar.MONTH).toString())
+            month.get().addOnCompleteListener {
+                if (it.result?.exists() == true) {
+                    month.update("monthViewsCount", FieldValue.increment(1))
+                } else {
+                    month.set(TrendData(monthViewsCount = 1))
+                }
             }
         }
     }
@@ -95,15 +125,27 @@ class FirebaseModel() {
         var doc = db.collection("trend").document("" + phrase?.id)
         doc.get().addOnCompleteListener {
             if (it.result?.exists() == true) {
-                doc.update("favCount", FieldValue.increment(1))
+                doc.update("totalFavs", FieldValue.increment(1))
             } else {
-                db.collection("trend").document("" + phrase?.id).set(TrendData(0, 1))
+                doc.set(TrendData(totalFavs = 1))
+            }
+            var month = doc.collection("months")
+                .document(Calendar.getInstance().get(Calendar.MONTH).toString())
+            month.get().addOnCompleteListener {
+                if (it.result?.exists() == true) {
+                    month.update("monthFavsCount", FieldValue.increment(1))
+                } else {
+                    month.set(TrendData(monthFavsCount = 1))
+                }
             }
         }
     }
 
     fun noticeRemovingFromFavorites(phrase: Phrase?) {
+        db.collection("trend").document("" + phrase?.id).collection("months")
+            .document("" + Calendar.getInstance().get(Calendar.MONTH))
+            .update("monthFavsCount", FieldValue.increment(-1))
         db.collection("trend").document("" + phrase?.id)
-            .update("favCount", FieldValue.increment(-1))
+            .update("totalFavs", FieldValue.increment(-1))
     }
 }

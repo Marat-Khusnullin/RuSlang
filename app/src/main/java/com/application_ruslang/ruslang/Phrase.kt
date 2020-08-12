@@ -21,4 +21,7 @@ data class Phrase(
 ) {
     @Ignore
     var isFavorite: Boolean = false
+
+    @Ignore
+    var trendData: TrendData = TrendData(0,0)
 }

@@ -14,7 +14,7 @@ import com.application_ruslang.ruslang.view.PhraseTrendFragment
 
 class PopularListAdapter(var context: Context?) : RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
 
-    private var phrases: List<Phrase> = mutableListOf()
+    private var phrases: List<Phrase?> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)
@@ -31,7 +31,7 @@ class PopularListAdapter(var context: Context?) : RecyclerView.Adapter<PopularLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(phrases[position])
+        holder.bind(phrases[position]!!)
         holder.itemView.setOnClickListener {
             holder.itemView.setOnClickListener {
 
@@ -51,7 +51,7 @@ class PopularListAdapter(var context: Context?) : RecyclerView.Adapter<PopularLi
         }
     }
 
-    fun setList(list: List<Phrase>) {
+    fun setList(list: List<Phrase?>) {
         phrases = list
         notifyDataSetChanged()
     }

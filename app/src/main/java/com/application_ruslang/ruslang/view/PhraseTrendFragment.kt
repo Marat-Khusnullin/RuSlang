@@ -26,6 +26,8 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
     private var graph: BarChart? = null
     private var back: Button? = null
     private var share: ImageButton? = null
+    private var totalViews: TextView? = null
+    private var totalFavs: TextView? = null
     private var model: FirebaseModel = FirebaseModel.instance
 
     private var presenter: PhraseTrendPresenter? = null
@@ -48,6 +50,8 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         graph = view.findViewById(R.id.chart)
         back = view.findViewById(R.id.btn_back)
         share = view.findViewById(R.id.ib_share)
+        totalViews = view.findViewById(R.id.tv_phrase_totalviews)
+        totalFavs = view.findViewById(R.id.tv_phrase_totalfavs)
 
         name?.text = phrase?.name
         presenter = PhraseTrendPresenter()
@@ -60,8 +64,10 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
 
     fun loadInfo() {
 
-        monthCount?.text = "Просмотров за месяц: "
-        favCount?.text = "Добавлено в избранное: "
+        monthCount?.text = "Просмотров за месяц: " + phrase?.trendData?.monthViewsCount
+        totalViews?.text = "Просмотров всего: " + phrase?.trendData?.totalViews
+        favCount?.text = "Добавлено в избранное за месяц: " + phrase?.trendData?.monthFavsCount
+        totalFavs?.text = "Добавлено в избранное всего: " + phrase?.trendData?.totalFavs
         ratingPlace?.text = "Место в общем рейтинге: "
         var list: MutableList<BarEntry> = ArrayList()
         list.add(BarEntry(1.0f, 20.0f))

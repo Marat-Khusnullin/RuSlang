@@ -125,14 +125,30 @@ class Model() : ModelInterface {
             var favs = db?.phraseDao()?.getFavPhrases()
             var favorites = mutableListOf<Phrase>()
             favs?.forEach { favorites.add(db!!.phraseDao().findById(it.phraseId!!)) }
-            //var list: MutableList<Phrase> = db!!.phraseDao().getFavoritePhrases().toMutableList()
-
             withContext(Dispatchers.Main) {
                 pr?.setList(favorites)
             }
 
         }
 
+    }
+
+    fun getPhrasesByIds(phraseIds: IntArray) = runBlocking {
+        var list = mutableListOf<Phrase?>()
+        GlobalScope.async {
+            list = db!!.phraseDao().loadAllByIds(phraseIds).toMutableList()
+        }.await()
+
+        return@runBlocking list
+    }
+
+    fun getPhraseById(id: Long) = runBlocking {
+        var phrase: Phrase? = null
+        GlobalScope.async {
+            phrase = db!!.phraseDao().findById(id)
+        }.await()
+
+        return@runBlocking phrase
     }
 
     fun subscribeOnPhraseChange(presenter: SubscribablePresenterInterface) {

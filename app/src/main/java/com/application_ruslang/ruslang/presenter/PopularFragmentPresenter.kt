@@ -16,7 +16,7 @@ class PopularFragmentPresenter(var view: PopularFragment) {
         model.loadPopularPhrases()
     }
 
-    fun loadList(list: List<Phrase>) {
+    fun loadList(list: List<Phrase?>) {
         view.updateList(list)
     }
 

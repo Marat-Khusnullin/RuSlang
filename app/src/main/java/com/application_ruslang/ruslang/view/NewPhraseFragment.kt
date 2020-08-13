@@ -47,11 +47,11 @@ class NewPhraseFragment: Fragment(), View.OnClickListener {
         }
 
         presenter?.addPhrase(
-            Phrase(0,et_phrase_name.text.toString(), et_phrase_definition.text.toString(), et_phrase_type.text.toString(),
+            Phrase(null,et_phrase_name.text.toString(), et_phrase_definition.text.toString(), et_phrase_type.text.toString(),
         et_phrase_group.text.toString(), et_phrase_examples.text.toString(),et_phrase_hashtags.text.toString(), et_phrase_origin.text.toString(),
         et_phrase_synonyms.text.toString(),0.0)
         )
-        getActivity()?.supportFragmentManager?.popBackStack();
+        getActivity()?.supportFragmentManager?.popBackStack()
     }
 
 

@@ -93,12 +93,7 @@ class SearchFragment(context: Context) : Fragment(),
 
     override fun setList(list: MutableList<Phrase?>) {
         if (adapter == null) {
-            adapter =
-                SearchListAdapter(
-                    list,
-                    activityContext,
-                    presenter
-                )
+            adapter = SearchListAdapter(list, activityContext, presenter)
             recyclerView?.adapter = adapter
         } else
             adapter?.setList(list)
@@ -134,7 +129,6 @@ class SearchFragment(context: Context) : Fragment(),
 
     override fun updateList(list: MutableList<Phrase?>) {
         adapter?.updatePhrases(list)
-        Log.d("UPDATING", "МЫ ТУТ")
     }
 
     private fun moveToNewPhraseFragment() {

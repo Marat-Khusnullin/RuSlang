@@ -151,6 +151,12 @@ class Model() : ModelInterface {
         return@runBlocking phrase
     }
 
+    fun addPhrase(phrase: Phrase) {
+        GlobalScope.launch {
+            db!!.phraseDao().insertPhrase(phrase)
+        }
+    }
+
     fun subscribeOnPhraseChange(presenter: SubscribablePresenterInterface) {
         subscribers.add(presenter)
     }

@@ -13,7 +13,7 @@ class FirebaseModel() {
     private val db: FirebaseFirestore
     private val model: Model
     var presenterr: PopularFragmentPresenter? = null
-    private val POPULAR_PHRASES_COUNT: Long = 10
+    private val POPULAR_PHRASES_COUNT: Long = 5
 
     constructor(presenter: PopularFragmentPresenter) : this() {
         presenterr = presenter
@@ -32,7 +32,7 @@ class FirebaseModel() {
         var data = db.collection("trend")
         var listOfPhrases = mutableListOf<Phrase?>()
         data.orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
-            data.get().addOnSuccessListener {
+            .get().addOnSuccessListener {
                 it.documents.forEach { doc ->
                     var phrase = model.getPhraseById(doc.id.toLong())
                     listOfPhrases.add(phrase)

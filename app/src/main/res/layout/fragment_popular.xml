@@ -37,7 +37,8 @@
                     android:layout_centerInParent="true"
                     android:text="@string/menu_rating"
                     android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
                 <ImageButton
                     android:id="@+id/ib_reload"

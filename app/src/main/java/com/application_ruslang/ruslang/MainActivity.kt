@@ -39,16 +39,14 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.action_rating -> {
-                        var a = PopularFragment()
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.container, a)
+                            .add(R.id.container, PopularFragment())
                             .commit()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.action_favorites -> {
-                        var a = FavoritesFragment()
                         supportFragmentManager.beginTransaction()
-                            .add(R.id.container, a)
+                            .add(R.id.container, FavoritesFragment())
                             .commit()
                         return@OnNavigationItemSelectedListener true
                     }

@@ -7,7 +7,7 @@ import android.os.Handler
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SPLASH_TIMEOUT: Long = 3000;
+    private val SPLASH_TIMEOUT: Long = 1500;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)

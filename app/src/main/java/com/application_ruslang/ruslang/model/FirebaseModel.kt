@@ -48,7 +48,7 @@ class FirebaseModel() {
                     }
                     months.get().addOnSuccessListener { month ->
                         month.documents.forEach { doc ->
-                            trendData.monthsViews.set(doc.id.toLong(), doc.getLong("monthViews"))
+                            trendData.monthsViews.set(doc.id.toLong(), doc.getLong("monthViewsCount"))
 
                         }
                     }
@@ -57,38 +57,7 @@ class FirebaseModel() {
                 }
                 presenterr?.loadList(listOfPhrases)
             }
-        /*data.get()
-            .addOnSuccessListener { doc ->
-                val ids = IntArray(5)
-                var list1 = mutableListOf<TrendData>()
-                doc.forEachIndexed { index, queryDocumentSnapshot ->
-                    run {
-                        ids.set(index, queryDocumentSnapshot.id.toInt())
-                        data.document(queryDocumentSnapshot.id).collection("month")
-                            .document(Calendar.getInstance().get(Calendar.MONTH).toString()).get()
-                            .addOnSuccessListener { result ->
-                                list1.add(
-                                    TrendData(
-                                        result?.getLong("monthCount")!!,
-                                        result.getLong("favCount")!!,
-                                        queryDocumentSnapshot.getLong("totalViews")!!,
-                                        queryDocumentSnapshot.getLong("totalFavs")!!
-                                    )
-                                )
-                            }
-
-                    }
-
-                }
-                val list = model.getPhrasesByIds(ids)
-                list.forEachIndexed { index, phrase ->
-                    phrase?.trendData = list1[index]
-                }
-                presenterr?.loadList(list)
-            }.addOnFailureListener {
-
-            }*/
-
+        
     }
 
     fun addPhrase(phrase: Phrase) {

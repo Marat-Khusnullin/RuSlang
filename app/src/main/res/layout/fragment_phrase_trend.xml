@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp" />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/tv_phrase_month_count"
@@ -80,7 +80,7 @@
                     android:layout_below="@id/tv_phrase_name"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_phrase_totalviews"
@@ -89,7 +89,7 @@
                     android:layout_below="@id/tv_phrase_month_count"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/tv_phrase_favorites_count"
@@ -98,7 +98,7 @@
                     android:layout_below="@id/tv_phrase_totalviews"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_phrase_totalfavs"
@@ -107,7 +107,7 @@
                     android:layout_below="@id/tv_phrase_favorites_count"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_phrase_rating_place"
@@ -116,15 +116,7 @@
                     android:layout_below="@id/tv_phrase_totalfavs"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/colorText"
-                    android:textSize="25sp" />
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/tv_phrase_rating_place" />
-
-
+                    android:textSize="20sp" />
 
 
             </RelativeLayout>

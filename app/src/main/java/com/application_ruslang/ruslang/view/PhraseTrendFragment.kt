@@ -1,6 +1,6 @@
 package com.application_ruslang.ruslang.view
 
-import android.graphics.Typeface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +13,6 @@ import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.presenter.PhraseTrendPresenter
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 
 class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
 
@@ -23,7 +20,6 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
     private var monthCount: TextView? = null
     private var favCount: TextView? = null
     private var ratingPlace: TextView? = null
-    private var graph: BarChart? = null
     private var back: Button? = null
     private var share: ImageButton? = null
     private var totalViews: TextView? = null
@@ -47,7 +43,6 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         monthCount = view.findViewById(R.id.tv_phrase_month_count)
         favCount = view.findViewById(R.id.tv_phrase_favorites_count)
         ratingPlace = view.findViewById(R.id.tv_phrase_rating_place)
-        graph = view.findViewById(R.id.chart)
         back = view.findViewById(R.id.btn_back)
         share = view.findViewById(R.id.ib_share)
         totalViews = view.findViewById(R.id.tv_phrase_totalviews)
@@ -68,17 +63,11 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         totalViews?.text = "Просмотров всего: " + phrase?.trendData?.totalViews
         favCount?.text = "Добавлено в избранное за месяц: " + phrase?.trendData?.monthFavsCount
         totalFavs?.text = "Добавлено в избранное всего: " + phrase?.trendData?.totalFavs
-        ratingPlace?.text = "Место в общем рейтинге: "
-        var list: MutableList<BarEntry> = ArrayList()
-        list.add(BarEntry(1.0f, 20.0f))
-        var list2: MutableList<BarEntry> = ArrayList()
-        list2.add(BarEntry(2.0f, 50.0f))
-        var dataSet: MutableList<BarDataSet> = ArrayList()
-        dataSet.add(BarDataSet(list, "TEST"))
-        dataSet.add(BarDataSet(list2, "Ноябрь"))
-        var lineData = BarData(dataSet as List<IBarDataSet>?)
+        ratingPlace?.text = "Место в общем рейтинге: " + phrase?.trendData?.monthsViews?.maxBy { p -> p.value!! }
 
-        graph?.data = lineData
+
+
+
     }
 
 

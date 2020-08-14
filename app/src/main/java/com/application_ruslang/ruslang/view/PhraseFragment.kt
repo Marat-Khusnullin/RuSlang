@@ -26,6 +26,7 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
     private var back: Button? = null
     private var share: ImageButton? = null
     private var views = mutableListOf<TextView?>()
+    private var link: TextView? = null
     private var presenter: PhrasePresenter? = null
 
     override fun onCreateView(
@@ -54,6 +55,8 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
 
         back = view.findViewById(R.id.btn_back)
         share = view.findViewById(R.id.ib_share)
+        link = view.findViewById(R.id.tv_phrase_teenslang)
+        link?.text = "teenslang.su/index.php?searchstr=" + phrase?.name?.replace(" ", "+")
         val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Italic.ttf")
 
         name?.text = phrase?.name

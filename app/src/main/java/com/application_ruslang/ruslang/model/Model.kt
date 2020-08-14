@@ -39,10 +39,6 @@ class Model() : ModelInterface {
                 AppDatabase::class.java, "phrases"
             ).createFromAsset("databases/phrases").build()
             currentFilteredList = db?.phraseDao()?.getAll()!!.toMutableList()
-
-            withContext(Dispatchers.Main) {
-                currentPresenter?.filteredListUpdated()
-            }
         }
         Log.d("Model", "Model initialized")
     }

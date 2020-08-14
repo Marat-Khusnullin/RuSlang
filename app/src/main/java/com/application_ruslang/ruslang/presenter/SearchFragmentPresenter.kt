@@ -62,11 +62,15 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
     override fun viewIsReady() {
-        //filteredListUpdated()
+        filteredListUpdated()
     }
 
     override fun phrasesUpdated(list: MutableList<Phrase?>) {
         view.updateList(list)
+    }
+
+    override fun phraseListReady() {
+        TODO("Not yet implemented")
     }
 
 

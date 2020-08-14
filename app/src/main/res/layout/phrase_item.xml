@@ -126,6 +126,15 @@
                     android:textColor="@color/colorText"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/tv_phrase_teenslang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_phrase_hashtags"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/colorText"
+                    android:textSize="15sp"
+                    android:autoLink="web"/>
 
             </RelativeLayout>
 

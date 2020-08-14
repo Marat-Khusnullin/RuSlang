@@ -62,7 +62,6 @@ class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresen
             presenter.removeFromFavorite(phrases[position])
             phrases.removeAt(position)
             notifyDataSetChanged()
-            Log.d("Debuggg", "Fav Button Clicked")
         }
     }
 

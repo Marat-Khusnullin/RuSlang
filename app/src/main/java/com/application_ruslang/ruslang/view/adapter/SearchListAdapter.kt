@@ -1,18 +1,23 @@
 package com.application_ruslang.ruslang.view.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
 import com.application_ruslang.ruslang.view.PhraseFragment
+
 
 class SearchListAdapter(
     var phrases: MutableList<Phrase?>,
@@ -86,6 +91,15 @@ class SearchListAdapter(
                     phrases[position]?.isFavorite = true
                 }
                 Log.d("Debuggg", "Fav Button Clicked")
+            }
+            holder.shareButton.setOnClickListener {
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(Intent.EXTRA_TEXT, phrases[position]?.name + "\n" + phrases[position]?.definition)
+                sendIntent.type = "text/plain"
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                context?.startActivity(shareIntent)
             }
 
             val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Regular.ttf")

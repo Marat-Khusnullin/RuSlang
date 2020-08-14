@@ -12,7 +12,8 @@ import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.view.PhraseFragment
 import com.application_ruslang.ruslang.view.PhraseTrendFragment
 
-class PopularListAdapter(var context: Context?) : RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
+class PopularListAdapter(var context: Context?) :
+    RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
 
     private var phrases: List<Phrase?> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,23 +33,23 @@ class PopularListAdapter(var context: Context?) : RecyclerView.Adapter<PopularLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(phrases[position]!!)
-        holder.itemView.setOnClickListener {
-            holder.itemView.setOnClickListener {
 
-                (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.animator.ffrmnt_nmtr,
-                        R.animator.fragment_remove
+        holder.itemView.setOnClickListener {
+
+            (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.animator.ffrmnt_nmtr,
+                    R.animator.fragment_remove
+                )
+                .add(
+                    R.id.container,
+                    PhraseTrendFragment(
+                        phrases[position]
                     )
-                    .add(
-                        R.id.container,
-                        PhraseTrendFragment(
-                            phrases[position]
-                        )
-                    ).addToBackStack(null)
-                    .commit()
-            }
+                ).addToBackStack(null)
+                .commit()
         }
+
     }
 
     fun setList(list: List<Phrase?>) {

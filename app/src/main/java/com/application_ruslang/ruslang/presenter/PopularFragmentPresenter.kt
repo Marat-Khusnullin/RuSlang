@@ -20,4 +20,8 @@ class PopularFragmentPresenter(var view: PopularFragment) {
         view.updateList(list)
     }
 
+    fun reloadPhrases(){
+        model.loadPopularPhrases()
+    }
+
 }

@@ -38,6 +38,16 @@
                 />
 
             <ImageButton
+                android:id="@+id/ib_trend"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="45dp"
+                android:background="@drawable/trend"
+                android:foreground="?android:attr/selectableItemBackground" />
+
+            <ImageButton
                 android:id="@+id/ib_share"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -132,9 +142,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_phrase_hashtags"
                     android:layout_marginTop="20dp"
+                    android:autoLink="web"
                     android:textColor="@color/colorText"
-                    android:textSize="15sp"
-                    android:autoLink="web"/>
+                    android:textSize="15sp" />
 
             </RelativeLayout>
 

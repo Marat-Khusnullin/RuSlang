@@ -3,6 +3,8 @@ package com.application_ruslang.ruslang.model
 import android.util.Log
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.TrendData
+import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
+import com.application_ruslang.ruslang.presenter.PhraseTrendPresenter
 import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,12 +14,8 @@ import java.util.*
 class FirebaseModel() {
     private val db: FirebaseFirestore
     private val model: Model
-    var presenterr: PopularFragmentPresenter? = null
+    private var subscribers: MutableList<SubscribablePresenterInterface?> = mutableListOf()
     private val POPULAR_PHRASES_COUNT: Long = 5
-
-    constructor(presenter: PopularFragmentPresenter) : this() {
-        presenterr = presenter
-    }
 
     companion object {
         val instance = FirebaseModel()
@@ -29,30 +27,17 @@ class FirebaseModel() {
     }
 
     fun loadPopularPhrases() {
-        var data = db.collection("trend")
-        var listOfPhrases = mutableListOf<Phrase?>()
-        data.orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
+        var listOfPhrases = mutableListOf<Phrase>()
+        db.collection("trend").orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
             .get().addOnSuccessListener {
                 it.documents.forEach { doc ->
                     var phrase = model.getPhraseById(doc.id.toLong())
-                    listOfPhrases.add(phrase)
+                    if (phrase != null)
+                        listOfPhrases.add(phrase)
 
-                    var trendData = TrendData(totalViews = doc.getLong("totalViews"), totalFavs = doc.getLong("totalFavs"))
-                    var months = db.collection("trend").document(doc.id).collection("months")
-                    months.document(Calendar.getInstance().get(Calendar.MONTH).toString()).get().addOnSuccessListener {
-                        trendData.monthViewsCount = it.getLong("monthViewsCount")
-                        trendData.monthFavsCount = it.getLong("monthFavsCount")
-                    }
-                    months.get().addOnSuccessListener { month ->
-                        month.documents.forEach { doc ->
-                            trendData.monthsViews.set(doc.id.toLong(), doc.getLong("monthViewsCount"))
-                        }
-                    }
-                    phrase?.trendData = trendData
                 }
-                presenterr?.loadList(listOfPhrases)
+                notifyAboutPopularPhrases(listOfPhrases)
             }
-
     }
 
     fun addPhrase(phrase: Phrase) {
@@ -62,7 +47,35 @@ class FirebaseModel() {
     }
 
     fun loadTrendInfo(phrase: Phrase) {
+        var data = db.collection("trend")
+        data.document("" + phrase.id)
+            .get().addOnSuccessListener { doc ->
 
+                var trendData = TrendData(
+                    totalViews = doc.getLong("totalViews"),
+                    totalFavs = doc.getLong("totalFavs")
+                )
+                var months =
+                    db.collection("trend").document(phrase.id.toString()).collection("months")
+                months.document(Calendar.getInstance().get(Calendar.MONTH).toString()).get()
+                    .addOnSuccessListener {
+                        trendData.monthViewsCount = it.getLong("monthViewsCount")
+
+                        trendData.monthFavsCount = it.getLong("monthFavsCount")
+
+                        months.get().addOnSuccessListener { month ->
+                            month.documents.forEach { doc ->
+                                trendData.monthsViews.set(
+                                    doc.id.toLong(),
+                                    doc.getLong("monthViewsCount")
+                                )
+                            }
+                        }
+                        phrase.trendData = trendData
+
+                    }
+
+            }
     }
 
     fun noticeViewing(phrase: Phrase) {
@@ -112,4 +125,14 @@ class FirebaseModel() {
         db.collection("trend").document("" + phrase?.id)
             .update("totalFavs", FieldValue.increment(-1))
     }
+
+    fun subscribeOnChanges(presenter: SubscribablePresenterInterface) {
+        subscribers.add(presenter)
+    }
+
+    private fun notifyAboutPopularPhrases(popularPhrases: List<Phrase>) {
+        subscribers.forEach { it?.popularPhrasesLoaded(popularPhrases)}
+    }
+
+
 }

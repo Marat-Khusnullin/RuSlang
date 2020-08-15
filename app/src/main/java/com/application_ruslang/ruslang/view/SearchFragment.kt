@@ -24,7 +24,7 @@ import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
 import com.application_ruslang.ruslang.view.adapter.SearchListAdapter
 
 
-class SearchFragment(context: Context) : Fragment(),
+class SearchFragment() : Fragment(),
     SearchViewInterface {
 
     private var searchView: SearchView? = null
@@ -39,6 +39,10 @@ class SearchFragment(context: Context) : Fragment(),
     private var progressBar: ProgressBar? = null
 
     init {
+
+    }
+
+    constructor(context: Context) : this() {
         activityContext = context
     }
 

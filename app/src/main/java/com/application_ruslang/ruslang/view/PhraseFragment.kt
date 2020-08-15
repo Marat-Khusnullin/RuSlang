@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.presenter.PhrasePresenter
@@ -27,6 +28,7 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
     private var share: ImageButton? = null
     private var views = mutableListOf<TextView?>()
     private var link: TextView? = null
+    private var trend: ImageButton? = null
     private var presenter: PhrasePresenter? = null
 
     override fun onCreateView(
@@ -56,6 +58,8 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
         back = view.findViewById(R.id.btn_back)
         share = view.findViewById(R.id.ib_share)
         link = view.findViewById(R.id.tv_phrase_teenslang)
+        trend = view.findViewById(R.id.ib_trend)
+
         link?.text = "teenslang.su/index.php?searchstr=" + phrase?.name?.replace(" ", "+")
         val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Italic.ttf")
 
@@ -79,12 +83,29 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
         }
 
         back?.setOnClickListener { activity?.onBackPressed() }
+        trend?.setOnClickListener { navigateToTrendInfo() }
         share?.setOnClickListener {}
+
 
         presenter = PhrasePresenter()
         phrase?.let { presenter?.viewIsReady(it) }
 
     }
 
+    private fun navigateToTrendInfo()
+    {
+        (context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.animator.ffrmnt_nmtr,
+                R.animator.fragment_remove
+            )
+            .add(
+                R.id.container,
+                PhraseTrendFragment(
+                    phrase
+                )
+            ).addToBackStack(null)
+            .commit()
+    }
 
 }

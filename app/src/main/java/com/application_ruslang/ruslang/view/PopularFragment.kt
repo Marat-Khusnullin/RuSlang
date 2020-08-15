@@ -44,10 +44,16 @@ class PopularFragment : Fragment() {
         recyclerView?.adapter = adapter
         presenter = PopularFragmentPresenter(this)
 
+        reload?.setOnClickListener {
+            recyclerView?.visibility = View.GONE
+            progressBar?.visibility = View.VISIBLE
+            presenter?.reloadPhrases()
+        }
         presenter?.viewIsReady()
     }
 
     fun updateList(list: List<Phrase?>) {
+        //recyclerView?.visibility = View.VISIBLE
         adapter?.setList(list)
         progressBar?.visibility = View.GONE
     }

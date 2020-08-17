@@ -1,15 +1,14 @@
 package com.application_ruslang.ruslang.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.SearchView
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -37,10 +36,7 @@ class SearchFragment() : Fragment(),
     private var isLoading: Boolean = false
     private var newPhrase: ImageButton? = null
     private var progressBar: ProgressBar? = null
-
-    init {
-
-    }
+    private var backToList: TextView? = null
 
     constructor(context: Context) : this() {
         activityContext = context
@@ -62,6 +58,7 @@ class SearchFragment() : Fragment(),
         random = getView()?.findViewById(R.id.btn_random)
         newPhrase = getView()?.findViewById(R.id.ib_new_phrase)
         progressBar = getView()?.findViewById(R.id.pb_search)
+        backToList = getView()?.findViewById(R.id.tv_backtolist)
 
         val linearLayoutManager = LinearLayoutManager(App.applicationContext())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -69,13 +66,12 @@ class SearchFragment() : Fragment(),
         initScrollListener()
 
         presenter = SearchFragmentPresenter(this)
+        adapter = SearchListAdapter(activityContext, presenter)
+        recyclerView?.adapter = adapter
         presenter?.viewIsReady()
 
         searchView?.setOnClickListener(View.OnClickListener { searchView?.isIconified = false })
-        searchView?.setOnSearchClickListener {
-            if (searchView?.query.toString() == "")
-                presenter?.searchStringUpdated()
-        }
+
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
@@ -90,10 +86,15 @@ class SearchFragment() : Fragment(),
 
         random?.setOnClickListener {
             presenter?.randomClicked()
+            backToList?.visibility = View.VISIBLE
+        }
+
+        backToList?.setOnClickListener {
+            presenter?.backToListClicked()
         }
 
         newPhrase?.setOnClickListener {
-            moveToNewPhraseFragment()
+            navigateToNewPhraseFragment()
         }
     }
 
@@ -121,15 +122,12 @@ class SearchFragment() : Fragment(),
     }
 
     override fun getSearchString(): String {
+        backToList?.visibility = View.GONE
         return searchView?.query.toString()
     }
 
     override fun setList(list: MutableList<Phrase?>) {
-        if (adapter == null) {
-            adapter = SearchListAdapter(list, activityContext, presenter)
-            recyclerView?.adapter = adapter
-        } else
-            adapter?.setList(list)
+        adapter?.setList(list)
         progressBar?.visibility = View.GONE
     }
 
@@ -142,7 +140,34 @@ class SearchFragment() : Fragment(),
         adapter?.updatePhrases(list)
     }
 
-    private fun moveToNewPhraseFragment() {
+    override fun sharePhrase(phrase: Phrase?) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, phrase?.name + "\n" + phrase?.definition)
+        sendIntent.type = "text/plain"
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context?.startActivity(shareIntent)
+    }
+
+    override fun navigateToPhraseFragment(phrase: Phrase?) {
+        hideKeyBoard()
+        (context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.animator.ffrmnt_nmtr,
+                R.animator.fragment_remove
+            )
+            .add(
+                R.id.container,
+                PhraseFragment(
+                    phrase
+                )
+            ).addToBackStack(null)
+            .commit()
+    }
+
+    private fun navigateToNewPhraseFragment() {
+        hideKeyBoard()
         (context as FragmentActivity).supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.animator.fragment_from_bottom, R.animator.fragment_remove)
             .add(
@@ -157,7 +182,6 @@ class SearchFragment() : Fragment(),
         val imm: InputMethodManager =
             activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-
     }
 
 

@@ -8,5 +8,8 @@ interface SearchFragmentPresenterInterface {
     fun lastItemScrolled()
     fun addToFavorites(phrase: Phrase?)
     fun removeFromFavorites(phrase: Phrase?)
+    fun shareButtonClicked(phrase: Phrase?)
+    fun itemClicked(phrase: Phrase?)
+    fun backToListClicked()
     fun viewIsReady()
 }

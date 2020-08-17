@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_phrase_trend"
@@ -32,8 +33,7 @@
                 android:background="@color/colorGraySuperLight"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="@string/back"
-                android:textColor="@color/colorBlueLight"
-                />
+                android:textColor="@color/colorBlueLight" />
 
             <ImageButton
                 android:id="@+id/ib_share"
@@ -48,86 +48,116 @@
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/rl_phrase_trend"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar_phrase_trend"
         android:background="@color/colorBackground">
+        <!--android:visibility="gone">-->
 
-        <ScrollView
+        <!--<ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:fillViewport="true">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBackground">
+
+            <TextView
+                android:id="@+id/tv_phrase_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp"
-                android:background="@color/colorBackground">
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:gravity="center"
+                android:textColor="@color/colorText"
+                android:textSize="30sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="30sp" />
+            <TextView
+                android:id="@+id/tv_phrase_totalviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_phrase_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/colorText"
+                android:textSize="50sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_month_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_phrase_name"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_txt_total_views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_phrase_totalviews"
+                android:layout_centerHorizontal="true"
+                android:text="всего просмотров"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_totalviews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_phrase_month_count"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/tv_phrase_month_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_txt_total_views"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_favorites_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_phrase_totalviews"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_phrase_totalfavs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_txt_total_views"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_totalfavs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_phrase_favorites_count"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_phrase_favorites_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_phrase_month_count"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="11dp"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/tv_phrase_rating_place"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_phrase_totalfavs"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_phrase_favorites_count"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="140dp"
+                android:text="*когда-нибудь тут будет график просмотров*" />
 
 
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_phrase_rating_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_phrase_favorites_count"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorText"
+                android:textSize="20sp" />
 
-        </ScrollView>
 
-        <ProgressBar
-            android:id="@+id/pb_trend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <!-- </ScrollView>-->
+
+
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/pb_trend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

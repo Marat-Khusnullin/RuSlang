@@ -17,7 +17,7 @@ import com.application_ruslang.ruslang.view.PhraseFragment
 class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresenter) :
     RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
 
-    var phrases: MutableList<Phrase>
+    var phrases: MutableList<Phrase?>
 
     init {
         phrases = mutableListOf()
@@ -59,15 +59,27 @@ class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresen
                 .commit()
         }
         holder.favButton.setOnClickListener() {
-            presenter.removeFromFavorite(phrases[position])
+            phrases[position]?.let { it1 -> presenter.removeFromFavorite(it1) }
             phrases.removeAt(position)
             notifyDataSetChanged()
         }
     }
 
-    fun setList(list: MutableList<Phrase>) {
+    fun setList(list: MutableList<Phrase?>) {
         phrases = list
         notifyDataSetChanged()
+    }
+
+    fun updateList(list: List<Phrase?>) {
+        list.forEachIndexed { index, phrase ->
+            run {
+                val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
+                if (a <= phrases.size && a>=0) {
+                    phrases[a] = phrase
+                    notifyItemChanged(a)
+                }
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

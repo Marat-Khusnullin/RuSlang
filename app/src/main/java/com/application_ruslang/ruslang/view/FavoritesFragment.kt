@@ -40,11 +40,14 @@ class FavoritesFragment() : Fragment() {
         recyclerView?.layoutManager = linearLayoutManager
         presenter?.viewIsReady()
 
-
     }
 
-    fun updateList(list: MutableList<Phrase>) {
+    fun setList(list: MutableList<Phrase?>) {
         adapter?.setList(list)
+    }
+
+    fun updateList(list: List<Phrase?>) {
+        adapter?.updateList(list)
     }
 
 }

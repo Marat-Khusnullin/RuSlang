@@ -27,35 +27,32 @@ class FirebaseModel() {
     }
 
     fun loadPopularPhrases() {
-        var listOfPhrases = mutableListOf<Phrase>()
+        val listOfPhrases = mutableListOf<Phrase>()
         db.collection("trend").orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
             .get().addOnSuccessListener {
                 it.documents.forEach { doc ->
-                    var phrase = model.getPhraseById(doc.id.toLong())
+                    val phrase = model.getPhraseById(doc.id.toLong())
                     if (phrase != null)
                         listOfPhrases.add(phrase)
-
                 }
                 notifyAboutPopularPhrases(listOfPhrases)
             }
     }
 
     fun addPhrase(phrase: Phrase) {
-        db.collection("suggested").add(phrase).addOnSuccessListener {
-
-        }
+        db.collection("suggested").add(phrase)
     }
 
     fun loadTrendInfo(phrase: Phrase) {
-        var data = db.collection("trend")
+        val data = db.collection("trend")
         data.document("" + phrase.id)
             .get().addOnSuccessListener { doc ->
 
-                var trendData = TrendData(
+                val trendData = TrendData(
                     totalViews = doc.getLong("totalViews"),
                     totalFavs = doc.getLong("totalFavs")
                 )
-                var months =
+                val months =
                     db.collection("trend").document(phrase.id.toString()).collection("months")
                 months.document(Calendar.getInstance().get(Calendar.MONTH).toString()).get()
                     .addOnSuccessListener {
@@ -71,7 +68,12 @@ class FirebaseModel() {
                                 )
                             }
                         }
-                        phrase.trendData = trendData
+                        db.collection("trend").orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
+                            .get().addOnSuccessListener {
+                                phrase.rating = it.documents.indexOfFirst { it.id == phrase.id.toString() }.toDouble() +1
+                                phrase.trendData = trendData
+                                notifyAboutTrendInfo(phrase)
+                            }
 
                     }
 
@@ -79,14 +81,14 @@ class FirebaseModel() {
     }
 
     fun noticeViewing(phrase: Phrase) {
-        var doc = db.collection("trend").document("" + phrase.id)
+        val doc = db.collection("trend").document("" + phrase.id)
         doc.get().addOnCompleteListener {
             if (it.result?.exists() == true) {
                 doc.update("totalViews", FieldValue.increment(1))
             } else {
                 doc.set(TrendData(totalViews = 1))
             }
-            var month = doc.collection("months")
+            val month = doc.collection("months")
                 .document(Calendar.getInstance().get(Calendar.MONTH).toString())
             month.get().addOnCompleteListener {
                 if (it.result?.exists() == true) {
@@ -99,14 +101,14 @@ class FirebaseModel() {
     }
 
     fun noticeAddingToFavorites(phrase: Phrase?) {
-        var doc = db.collection("trend").document("" + phrase?.id)
-        doc.get().addOnCompleteListener {
+        val doc = db.collection("trend").document("" + phrase?.id)
+        doc.get().addOnCompleteListener { it ->
             if (it.result?.exists() == true) {
                 doc.update("totalFavs", FieldValue.increment(1))
             } else {
                 doc.set(TrendData(totalFavs = 1))
             }
-            var month = doc.collection("months")
+            val month = doc.collection("months")
                 .document(Calendar.getInstance().get(Calendar.MONTH).toString())
             month.get().addOnCompleteListener {
                 if (it.result?.exists() == true) {
@@ -132,6 +134,10 @@ class FirebaseModel() {
 
     private fun notifyAboutPopularPhrases(popularPhrases: List<Phrase>) {
         subscribers.forEach { it?.popularPhrasesLoaded(popularPhrases)}
+    }
+
+    private fun notifyAboutTrendInfo(phrase: Phrase) {
+        subscribers.forEach { it?.phraseTrendInfoLoaded(phrase)}
     }
 
 

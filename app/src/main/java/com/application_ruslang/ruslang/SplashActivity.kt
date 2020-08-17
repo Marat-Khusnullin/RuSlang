@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.application_ruslang.ruslang.model.Model
+import com.application_ruslang.ruslang.view.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 

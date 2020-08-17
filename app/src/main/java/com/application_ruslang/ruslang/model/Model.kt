@@ -116,15 +116,14 @@ class Model() : ModelInterface {
         }
     }
 
-    fun getFavoritesPhrases() {
+    fun loadFavoritesPhrases() {
         GlobalScope.launch {
             var favs = db?.phraseDao()?.getFavPhrases()
-            var favorites = mutableListOf<Phrase>()
-            favs?.forEach { favorites.add(db!!.phraseDao().findById(it.phraseId!!)) }
+            var favorites = mutableListOf<Phrase?>()
+            favs?.forEach { favorites.add(db?.phraseDao()?.findById(it.phraseId!!)) }
             withContext(Dispatchers.Main) {
-                pr?.setList(favorites)
+                notifyFavoritesPhrasesLoaded(favorites)
             }
-
         }
 
     }
@@ -155,6 +154,10 @@ class Model() : ModelInterface {
 
     fun subscribeOnPhraseChange(presenter: SubscribablePresenterInterface) {
         subscribers.add(presenter)
+    }
+
+    private fun notifyFavoritesPhrasesLoaded(list: List<Phrase?>) {
+        subscribers.forEach { it.favoritesPhrasesLoaded(list) }
     }
 
 

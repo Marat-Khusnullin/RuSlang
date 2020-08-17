@@ -15,23 +15,31 @@ class PhraseTrendPresenter(var view: PhraseTrendFragment) : SubscribablePresente
     }
 
     fun loadTrendInfo(phrase: Phrase) {
-        model.loadTrendInfo(phrase, this)
+        model.loadTrendInfo(phrase)
     }
 
     fun viewIsReady() {
-        //model.loadTrendInfo()
-    }
 
-    fun infoLoaded(phrase: Phrase) {
-        view.refresh()
     }
 
     override fun phrasesUpdated(list: MutableList<Phrase?>) {
-        TODO("Not yet implemented")
+
+    }
+
+    override fun popularPhrasesLoaded(list: List<Phrase>) {
+
+    }
+
+    override fun favoritesPhrasesLoaded(list: List<Phrase?>) {
+
+    }
+
+    override fun phraseTrendInfoLoaded(phrase: Phrase) {
+        view.loadInfo(phrase)
     }
 
     override fun phraseListReady() {
-        TODO("Not yet implemented")
+
     }
 
 

@@ -61,6 +61,18 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
         firebaseModel.noticeRemovingFromFavorites(phrase)
     }
 
+    override fun shareButtonClicked(phrase: Phrase?) {
+        view.sharePhrase(phrase)
+    }
+
+    override fun itemClicked(phrase: Phrase?) {
+        view.navigateToPhraseFragment(phrase)
+    }
+
+    override fun backToListClicked() {
+        searchStringUpdated()
+    }
+
     override fun viewIsReady() {
         filteredListUpdated()
     }
@@ -69,8 +81,20 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
         view.updateList(list)
     }
 
+    override fun popularPhrasesLoaded(list: List<Phrase>) {
+
+    }
+
+    override fun favoritesPhrasesLoaded(list: List<Phrase?>) {
+
+    }
+
+    override fun phraseTrendInfoLoaded(phrase: Phrase) {
+
+    }
+
     override fun phraseListReady() {
-        TODO("Not yet implemented")
+
     }
 
 

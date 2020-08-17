@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
@@ -20,7 +19,6 @@ import com.application_ruslang.ruslang.view.PhraseFragment
 
 
 class SearchListAdapter(
-    var phrases: MutableList<Phrase?>,
     _context: Context?,
     var presenter: SearchFragmentPresenterInterface?
 ) :
@@ -28,10 +26,7 @@ class SearchListAdapter(
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
     private val context = _context
-
-    init {
-
-    }
+    var phrases: MutableList<Phrase?> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_TYPE_ITEM)
@@ -66,19 +61,7 @@ class SearchListAdapter(
         if (holder is SearchViewHolder) {
             holder.bind(phrases[position])
             holder.itemView.setOnClickListener {
-
-                (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.animator.ffrmnt_nmtr,
-                        R.animator.fragment_remove
-                    )
-                    .add(
-                        R.id.container,
-                        PhraseFragment(
-                            phrases[position]
-                        )
-                    ).addToBackStack(null)
-                    .commit()
+                presenter?.itemClicked(phrases[position])
             }
             holder.favButton.setOnClickListener() {
                 if (phrases[position]?.isFavorite == true) {
@@ -90,16 +73,10 @@ class SearchListAdapter(
                     presenter?.addToFavorites(phrases[position])
                     phrases[position]?.isFavorite = true
                 }
-                Log.d("Debuggg", "Fav Button Clicked")
+
             }
             holder.shareButton.setOnClickListener {
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(Intent.EXTRA_TEXT, phrases[position]?.name + "\n" + phrases[position]?.definition)
-                sendIntent.type = "text/plain"
-
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                context?.startActivity(shareIntent)
+                presenter?.shareButtonClicked(phrases[position])
             }
 
             val typeface = Typeface.createFromAsset(context?.assets, "OpenSans-Regular.ttf")
@@ -168,11 +145,12 @@ class SearchListAdapter(
         list.forEachIndexed { index, phrase ->
             run {
                 val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
-                if (a >= phrases.size)
+                if (a <= phrases.size) {
                     phrases[a] = phrase
+                    notifyItemChanged(a)
+                }
             }
         }
-        notifyDataSetChanged()
     }
 
 

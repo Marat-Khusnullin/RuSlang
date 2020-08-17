@@ -53,7 +53,7 @@ class PopularFragment : Fragment() {
     }
 
     fun updateList(list: List<Phrase?>) {
-        //recyclerView?.visibility = View.VISIBLE
+        recyclerView?.visibility = View.VISIBLE
         adapter?.setList(list)
         progressBar?.visibility = View.GONE
     }

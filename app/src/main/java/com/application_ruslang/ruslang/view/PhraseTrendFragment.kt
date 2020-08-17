@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.model.FirebaseModel
@@ -27,6 +25,7 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
     private var totalViews: TextView? = null
     private var totalFavs: TextView? = null
     private var progressBar: ProgressBar? = null
+    private var relativeLayout: RelativeLayout? = null
 
     private var presenter: PhraseTrendPresenter? = null
 
@@ -50,7 +49,7 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         totalViews = view.findViewById(R.id.tv_phrase_totalviews)
         totalFavs = view.findViewById(R.id.tv_phrase_totalfavs)
         progressBar = view.findViewById(R.id.pb_trend)
-
+        relativeLayout = view.findViewById(R.id.rl_phrase_trend)
 
         presenter = PhraseTrendPresenter(this)
 
@@ -62,14 +61,15 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         presenter?.viewIsReady()
     }
 
-
-    fun refresh() {
+    fun loadInfo(phrase: Phrase) {
         name?.text = phrase?.name
-        monthCount?.text = "Просмотров за месяц: " + phrase?.trendData?.monthViewsCount
-        totalViews?.text = "Просмотров всего: " + phrase?.trendData?.totalViews
-        favCount?.text = "Добавлено в избранное за месяц: " + phrase?.trendData?.monthFavsCount
-        totalFavs?.text = "Добавлено в избранное всего: " + phrase?.trendData?.totalFavs
-        ratingPlace?.text = "Место в общем рейтинге: запомни брат такую фразу, всё будет, но не сразу"
+        monthCount?.text = "за месяц: " + phrase?.trendData?.monthViewsCount
+        totalViews?.text = "" + phrase?.trendData?.totalViews
+        favCount?.text = "в избранное за месяц: " + phrase?.trendData?.monthFavsCount
+        totalFavs?.text = "в избранном: " + phrase?.trendData?.totalFavs
+        ratingPlace?.text = "место в общем рейтинге: " + phrase.rating?.toInt()
+        relativeLayout?.visibility = View.VISIBLE
+        progressBar?.visibility = View.GONE
     }
 
 

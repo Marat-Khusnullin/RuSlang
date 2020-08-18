@@ -16,7 +16,7 @@ import kotlin.random.Random
 class Model() {
 
     private var subscribers: MutableList<SubscribablePresenterInterface> = mutableListOf()
-    @Volatile
+    //@Volatile
     private var currentFilteredList = mutableListOf<Phrase>()
     private var db: AppDatabase? = null
 

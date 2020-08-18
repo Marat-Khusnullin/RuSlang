@@ -1,21 +1,17 @@
 package com.application_ruslang.ruslang.view.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
 import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
-import com.application_ruslang.ruslang.view.PhraseFragment
 
 
 class SearchListAdapter(
@@ -26,7 +22,13 @@ class SearchListAdapter(
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
     private val context = _context
+    private var mRecyclerView: RecyclerView? = null
     var phrases: MutableList<Phrase?> = mutableListOf()
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecyclerView = recyclerView
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == VIEW_TYPE_ITEM)
@@ -125,7 +127,9 @@ class SearchListAdapter(
 
     fun setList(list: MutableList<Phrase?>) {
         phrases = list
-        notifyDataSetChanged()
+        mRecyclerView?.post {
+            notifyDataSetChanged()
+        }
     }
 
     fun addPhrases(list: List<Phrase?>) {
@@ -133,12 +137,18 @@ class SearchListAdapter(
         list.forEach {
             phrases.add(it)
         }
-        notifyDataSetChanged()
+        mRecyclerView?.post {
+            notifyDataSetChanged()
+        }
+
     }
 
     fun addPhrase(phrase: Phrase?) {
         phrases.add(phrase)
-        notifyItemChanged(phrases.lastIndex)
+        mRecyclerView?.post {
+            notifyItemChanged(phrases.lastIndex)
+        }
+
     }
 
     fun updatePhrases(list: List<Phrase?>) {
@@ -147,7 +157,9 @@ class SearchListAdapter(
                 val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
                 if (a <= phrases.size) {
                     phrases[a] = phrase
-                    notifyItemChanged(a)
+                    mRecyclerView?.post {
+                        notifyItemChanged(a)
+                    }
                 }
             }
         }

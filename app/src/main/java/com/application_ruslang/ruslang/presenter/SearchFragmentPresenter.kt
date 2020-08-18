@@ -46,6 +46,7 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
     override fun lastItemScrolled() {
+        Log.d("LASTITEM", "DADADA")
         val list = model.getPhrasesByIndexAndCount(currentIndex, OBJ_COUNT)
         currentIndex += list.size
         view.loadExtraPhrases(list)

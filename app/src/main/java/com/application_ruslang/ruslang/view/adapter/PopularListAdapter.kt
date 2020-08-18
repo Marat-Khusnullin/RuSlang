@@ -9,10 +9,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
 import com.application_ruslang.ruslang.view.PhraseFragment
 import com.application_ruslang.ruslang.view.PhraseTrendFragment
 
-class PopularListAdapter(var context: Context?) :
+class PopularListAdapter(var context: Context?, var presenter: PopularFragmentPresenter?) :
     RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
 
     private var phrases: List<Phrase?> = mutableListOf()
@@ -36,18 +37,7 @@ class PopularListAdapter(var context: Context?) :
 
         holder.itemView.setOnClickListener {
 
-            (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                    R.animator.ffrmnt_nmtr,
-                    R.animator.fragment_remove
-                )
-                .add(
-                    R.id.container,
-                    PhraseTrendFragment(
-                        phrases[position]
-                    )
-                ).addToBackStack(null)
-                .commit()
+            presenter?.itemClicked(phrases[position])
         }
 
     }

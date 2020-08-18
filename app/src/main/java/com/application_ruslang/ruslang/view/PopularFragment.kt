@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.*
@@ -40,9 +41,9 @@ class PopularFragment : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = linearLayoutManager
 
-        adapter = PopularListAdapter(context)
-        recyclerView?.adapter = adapter
         presenter = PopularFragmentPresenter(this)
+        adapter = PopularListAdapter(context, presenter)
+        recyclerView?.adapter = adapter
 
         reload?.setOnClickListener {
             recyclerView?.visibility = View.GONE
@@ -56,6 +57,21 @@ class PopularFragment : Fragment() {
         recyclerView?.visibility = View.VISIBLE
         adapter?.setList(list)
         progressBar?.visibility = View.GONE
+    }
+
+    fun navigateToPhraseFragment(phrase: Phrase?) {
+        (context as FragmentActivity).supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.animator.ffrmnt_nmtr,
+                R.animator.fragment_remove
+            )
+            .add(
+                R.id.container,
+                PhraseFragment(
+                    phrase
+                )
+            ).addToBackStack(null)
+            .commit()
     }
 
 

@@ -6,7 +6,6 @@ import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.AppDatabase
 import com.application_ruslang.ruslang.FavPhrase
 import com.application_ruslang.ruslang.Phrase
-import com.application_ruslang.ruslang.interfaces.ModelInterface
 import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
 import com.application_ruslang.ruslang.presenter.FavoritesPresenter
 import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
@@ -14,22 +13,17 @@ import kotlinx.coroutines.*
 import kotlin.random.Random
 
 
-class Model() : ModelInterface {
+class Model() {
 
     private var subscribers: MutableList<SubscribablePresenterInterface> = mutableListOf()
+    @Volatile
     private var currentFilteredList = mutableListOf<Phrase>()
     private var db: AppDatabase? = null
 
     var currentPresenter: SearchFragmentPresenter? = null
 
-    var pr: FavoritesPresenter? = null
-
     companion object {
         val instance = Model()
-    }
-
-    constructor(presenter: SearchFragmentPresenter) : this() {
-        currentPresenter = presenter
     }
 
     init {
@@ -39,6 +33,10 @@ class Model() : ModelInterface {
                 AppDatabase::class.java, "phrases"
             ).createFromAsset("databases/phrases").build()
             currentFilteredList = db?.phraseDao()?.getAll()!!.toMutableList()
+            withContext(Dispatchers.Main) {
+                notifyPhrasesListReady()
+            }
+
         }
         Log.d("Model", "Model initialized")
     }
@@ -61,14 +59,15 @@ class Model() : ModelInterface {
 
     fun getPhrasesByIndexAndCount(index: Int, count: Int): MutableList<Phrase?> = runBlocking {
         val list = mutableListOf<Phrase?>()
-        GlobalScope.async {
 
+        GlobalScope.async {
             var lastIndex: Int = index + count
             if (lastIndex >= currentFilteredList.size) {
                 lastIndex = currentFilteredList.size - 1
             }
 
             for (i in index..lastIndex) {
+
                 var b = db?.phraseDao()?.findFavPhraseById(currentFilteredList[i].id!!)
                 if (b != null) {
                     currentFilteredList[i].isFavorite = true
@@ -158,6 +157,10 @@ class Model() : ModelInterface {
 
     private fun notifyFavoritesPhrasesLoaded(list: List<Phrase?>) {
         subscribers.forEach { it.favoritesPhrasesLoaded(list) }
+    }
+
+    private fun notifyPhrasesListReady() {
+        subscribers.forEach { it.phraseListReady() }
     }
 
 

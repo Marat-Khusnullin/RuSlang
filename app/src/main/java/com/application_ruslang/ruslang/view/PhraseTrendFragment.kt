@@ -1,5 +1,6 @@
 package com.application_ruslang.ruslang.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -57,6 +58,10 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
             activity?.onBackPressed()
         }
 
+        share?.setOnClickListener {
+            presenter?.shareButtonClicked(phrase)
+        }
+
         phrase?.let { presenter?.loadTrendInfo(it) }
         presenter?.viewIsReady()
     }
@@ -70,6 +75,16 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         ratingPlace?.text = "место в общем рейтинге: " + phrase.rating?.toInt()
         relativeLayout?.visibility = View.VISIBLE
         progressBar?.visibility = View.GONE
+    }
+
+    fun shareData(string: String) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, string)
+        sendIntent.type = "text/plain"
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context?.startActivity(shareIntent)
     }
 
 

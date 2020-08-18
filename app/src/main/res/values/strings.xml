@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">РуCленг</string>
+    <string name="app_version">Версия 1.0</string>
     <string name="menu_search">Поиск</string>
     <string name="menu_rating">Тренды</string>
     <string name="menu_favorites">Избранное</string>

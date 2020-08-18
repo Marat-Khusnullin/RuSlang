@@ -26,6 +26,10 @@ class PopularFragmentPresenter(var view: PopularFragment): SubscribablePresenter
         view.updateList(list)
     }
 
+    fun itemClicked(phrase: Phrase?) {
+        view.navigateToPhraseFragment(phrase)
+    }
+
     override fun favoritesPhrasesLoaded(list: List<Phrase?>) {
 
     }

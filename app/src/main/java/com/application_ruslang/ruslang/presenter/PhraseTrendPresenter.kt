@@ -18,6 +18,12 @@ class PhraseTrendPresenter(var view: PhraseTrendFragment) : SubscribablePresente
         model.loadTrendInfo(phrase)
     }
 
+    fun shareButtonClicked(phrase: Phrase?) {
+        var string = phrase?.name + "\n\n" + "просмотров: " + phrase?.trendData?.totalViews + "\n" + "просмотров за месяц: " + phrase?.trendData?.monthViewsCount +
+        "\n" + "в избранном: " + phrase?.trendData?.totalFavs + "\n" + "в избранном за месяц: " + phrase?.trendData?.monthFavsCount + "\n" + "место в рейтинге: " + phrase?.rating?.toInt()
+        view.shareData(string)
+    }
+
     fun viewIsReady() {
 
     }

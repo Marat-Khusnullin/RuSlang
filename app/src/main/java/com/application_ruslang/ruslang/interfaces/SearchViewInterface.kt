@@ -7,7 +7,7 @@ interface SearchViewInterface {
     fun setList(list: MutableList<Phrase?>)
     fun loadExtraPhrases(list: MutableList<Phrase?>)
     fun updateList(list: MutableList<Phrase?>)
-    fun sharePhrase(phrase: Phrase?)
+    fun shareData(string: String)
     fun navigateToPhraseFragment(phrase: Phrase?)
 
 }

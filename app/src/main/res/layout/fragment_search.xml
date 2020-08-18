@@ -15,7 +15,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_search"
             android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize"
+            android:layout_height="56dp"
             android:background="@color/colorGraySuperLight"
             android:elevation="@dimen/toolbarElevation"
             android:contentInsetStart="0dp"

@@ -71,7 +71,7 @@ class SearchFragment() : Fragment(),
         presenter?.viewIsReady()
 
         searchView?.setOnClickListener(View.OnClickListener { searchView?.isIconified = false })
-
+        searchView?.isEnabled = false
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
@@ -140,10 +140,10 @@ class SearchFragment() : Fragment(),
         adapter?.updatePhrases(list)
     }
 
-    override fun sharePhrase(phrase: Phrase?) {
+    override fun shareData(string: String) {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
-        sendIntent.putExtra(Intent.EXTRA_TEXT, phrase?.name + "\n" + phrase?.definition)
+        sendIntent.putExtra(Intent.EXTRA_TEXT, string)
         sendIntent.type = "text/plain"
 
         val shareIntent = Intent.createChooser(sendIntent, null)

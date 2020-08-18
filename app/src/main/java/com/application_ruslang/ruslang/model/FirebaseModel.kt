@@ -68,7 +68,7 @@ class FirebaseModel() {
                                 )
                             }
                         }
-                        db.collection("trend").orderBy("totalViews", Query.Direction.DESCENDING).limit(POPULAR_PHRASES_COUNT)
+                        db.collection("trend").orderBy("totalViews", Query.Direction.DESCENDING)
                             .get().addOnSuccessListener {
                                 phrase.rating = it.documents.indexOfFirst { it.id == phrase.id.toString() }.toDouble() +1
                                 phrase.trendData = trendData

@@ -1,5 +1,6 @@
 package com.application_ruslang.ruslang.view
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -84,10 +85,10 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
 
         back?.setOnClickListener { activity?.onBackPressed() }
         trend?.setOnClickListener { navigateToTrendInfo() }
-        share?.setOnClickListener {}
+        share?.setOnClickListener { presenter?.shareButtonClicked(phrase) }
 
 
-        presenter = PhrasePresenter()
+        presenter = PhrasePresenter(this)
         phrase?.let { presenter?.viewIsReady(it) }
 
     }
@@ -106,6 +107,16 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
                 )
             ).addToBackStack(null)
             .commit()
+    }
+
+    fun shareData(string: String) {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, string)
+        sendIntent.type = "text/plain"
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context?.startActivity(shareIntent)
     }
 
 }

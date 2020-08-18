@@ -62,7 +62,8 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
     override fun shareButtonClicked(phrase: Phrase?) {
-        view.sharePhrase(phrase)
+        var string = phrase?.name + "\n" + phrase?.definition
+        view.shareData(string)
     }
 
     override fun itemClicked(phrase: Phrase?) {
@@ -94,7 +95,7 @@ class SearchFragmentPresenter(private val view: SearchViewInterface) :
     }
 
     override fun phraseListReady() {
-
+        filteredListUpdated()
     }
 
 

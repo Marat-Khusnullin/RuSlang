@@ -155,7 +155,7 @@ class SearchListAdapter(
         list.forEachIndexed { index, phrase ->
             run {
                 val a = phrases.indexOf(phrases.find { cPhrase -> cPhrase?.id == phrase?.id })
-                if (a <= phrases.size) {
+                if (a <= phrases.size && a >= 0) {
                     phrases[a] = phrase
                     mRecyclerView?.post {
                         notifyItemChanged(a)

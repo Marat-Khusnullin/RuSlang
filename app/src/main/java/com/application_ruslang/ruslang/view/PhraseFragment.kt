@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.interfaces.presenterInterface.PhrasePresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.PhraseFragmentInterface
 import com.application_ruslang.ruslang.presenter.PhrasePresenter
 
 
-class PhraseFragment(private var phrase: Phrase?) : Fragment() {
+class PhraseFragment(private var phrase: Phrase?) : Fragment(), PhraseFragmentInterface {
 
     private var name: TextView? = null
     private var definition: TextView? = null
@@ -30,7 +32,7 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
     private var views = mutableListOf<TextView?>()
     private var link: TextView? = null
     private var trend: ImageButton? = null
-    private var presenter: PhrasePresenter? = null
+    private var presenter: PhrasePresenterInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,7 +111,7 @@ class PhraseFragment(private var phrase: Phrase?) : Fragment() {
             .commit()
     }
 
-    fun shareData(string: String) {
+    override fun shareData(string: String) {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
         sendIntent.putExtra(Intent.EXTRA_TEXT, string)

@@ -11,10 +11,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.interfaces.presenterInterface.FavoritesPresenterInterface
 import com.application_ruslang.ruslang.presenter.FavoritesPresenter
 import com.application_ruslang.ruslang.view.PhraseFragment
 
-class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresenter) :
+class FavoritesListAdapter(var context: Context?, var presenter: FavoritesPresenterInterface) :
     RecyclerView.Adapter<FavoritesListAdapter.ViewHolder>() {
 
     var phrases: MutableList<Phrase?>

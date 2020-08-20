@@ -11,12 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
-import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
+import com.application_ruslang.ruslang.interfaces.presenterInterface.SearchPresenterInterface
 
 
 class SearchListAdapter(
     _context: Context?,
-    var presenter: SearchFragmentPresenterInterface?
+    var presenter: SearchPresenterInterface?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val VIEW_TYPE_ITEM = 0

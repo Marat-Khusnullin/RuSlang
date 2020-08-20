@@ -1,11 +1,8 @@
 package com.application_ruslang.ruslang.model
 
-import android.util.Log
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.TrendData
 import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
-import com.application_ruslang.ruslang.presenter.PhraseTrendPresenter
-import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

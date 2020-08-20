@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.view.informationView.AboutDevFragment
+import com.application_ruslang.ruslang.view.informationView.AboutProgramFragment
 
 class InfoFragment : Fragment(), View.OnClickListener {
 

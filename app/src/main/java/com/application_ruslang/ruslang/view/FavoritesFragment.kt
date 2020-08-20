@@ -11,13 +11,15 @@ import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.view.adapter.FavoritesListAdapter
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.interfaces.presenterInterface.FavoritesPresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.FavoritesFragmentInterface
 import com.application_ruslang.ruslang.presenter.FavoritesPresenter
 
-class FavoritesFragment() : Fragment() {
+class FavoritesFragment() : Fragment(), FavoritesFragmentInterface {
 
     private var adapter: FavoritesListAdapter? = null
     private var recyclerView: RecyclerView? = null
-    private var presenter: FavoritesPresenter? = null
+    private var presenter: FavoritesPresenterInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +44,11 @@ class FavoritesFragment() : Fragment() {
 
     }
 
-    fun setList(list: MutableList<Phrase?>) {
+    override fun setList(list: MutableList<Phrase?>) {
         adapter?.setList(list)
     }
 
-    fun updateList(list: List<Phrase?>) {
+    override fun updateList(list: List<Phrase?>) {
         adapter?.updateList(list)
     }
 

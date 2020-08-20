@@ -1,14 +1,12 @@
 package com.application_ruslang.ruslang.model
 
-import android.util.Log
 import androidx.room.Room
 import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.AppDatabase
 import com.application_ruslang.ruslang.FavPhrase
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
-import com.application_ruslang.ruslang.presenter.FavoritesPresenter
-import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
+import com.application_ruslang.ruslang.presenter.SearchPresenter
 import kotlinx.coroutines.*
 import kotlin.random.Random
 
@@ -20,7 +18,7 @@ class Model() {
     private var currentFilteredList = mutableListOf<Phrase>()
     private var db: AppDatabase? = null
 
-    var currentPresenter: SearchFragmentPresenter? = null
+    var currentPresenter: SearchPresenter? = null
 
     companion object {
         val instance = Model()
@@ -38,7 +36,7 @@ class Model() {
             }
 
         }
-        Log.d("Model", "Model initialized")
+
     }
 
     fun setSearchString(string: String) {
@@ -96,7 +94,7 @@ class Model() {
     fun addToFavorites(phrase: Phrase?) {
         GlobalScope.launch {
             db?.phraseDao()?.insertFavPhrase(FavPhrase(phraseId = phrase?.id))
-            Log.d("Database", "Phrase " + phrase?.name + " is favorite now!")
+
         }
     }
 
@@ -110,7 +108,7 @@ class Model() {
                 }
             }
 
-            Log.d("Database", "Phrase " + phrase?.name + " deleted")
+
 
         }
     }

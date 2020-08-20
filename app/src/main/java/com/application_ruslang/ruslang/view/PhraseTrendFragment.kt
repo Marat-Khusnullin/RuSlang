@@ -12,10 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.interfaces.presenterInterface.PhraseTrendPresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.PhraseTrendFragmentInterface
 import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.presenter.PhraseTrendPresenter
 
-class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
+class PhraseTrendFragment(var phrase: Phrase?) : Fragment(), PhraseTrendFragmentInterface {
 
     private var name: TextView? = null
     private var monthCount: TextView? = null
@@ -28,7 +30,7 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
     private var progressBar: ProgressBar? = null
     private var relativeLayout: RelativeLayout? = null
 
-    private var presenter: PhraseTrendPresenter? = null
+    private var presenter: PhraseTrendPresenterInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +68,7 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         presenter?.viewIsReady()
     }
 
-    fun loadInfo(phrase: Phrase) {
+    override fun loadInfo(phrase: Phrase) {
         name?.text = phrase?.name
         monthCount?.text = "за месяц: " + phrase?.trendData?.monthViewsCount
         totalViews?.text = "" + phrase?.trendData?.totalViews
@@ -77,7 +79,7 @@ class PhraseTrendFragment(var phrase: Phrase?) : Fragment() {
         progressBar?.visibility = View.GONE
     }
 
-    fun shareData(string: String) {
+    override fun shareData(string: String) {
         val sendIntent = Intent()
         sendIntent.action = Intent.ACTION_SEND
         sendIntent.putExtra(Intent.EXTRA_TEXT, string)

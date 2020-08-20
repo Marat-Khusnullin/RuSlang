@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
-import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
-import com.application_ruslang.ruslang.view.PhraseFragment
-import com.application_ruslang.ruslang.view.PhraseTrendFragment
+import com.application_ruslang.ruslang.interfaces.presenterInterface.PopularPresenterInterface
+import com.application_ruslang.ruslang.presenter.PopularPresenter
 
-class PopularListAdapter(var context: Context?, var presenter: PopularFragmentPresenter?) :
+class PopularListAdapter(var context: Context?, var presenter: PopularPresenterInterface?) :
     RecyclerView.Adapter<PopularListAdapter.ViewHolder>() {
 
     private var phrases: List<Phrase?> = mutableListOf()

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -17,18 +16,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.App
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
-import com.application_ruslang.ruslang.interfaces.SearchFragmentPresenterInterface
-import com.application_ruslang.ruslang.interfaces.SearchViewInterface
-import com.application_ruslang.ruslang.presenter.SearchFragmentPresenter
+import com.application_ruslang.ruslang.interfaces.presenterInterface.SearchPresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.SearchFragmentInterface
+import com.application_ruslang.ruslang.presenter.SearchPresenter
 import com.application_ruslang.ruslang.view.adapter.SearchListAdapter
 
 
 class SearchFragment() : Fragment(),
-    SearchViewInterface {
+    SearchFragmentInterface {
 
     private var searchView: SearchView? = null
     private var recyclerView: RecyclerView? = null
-    private var presenter: SearchFragmentPresenterInterface? = null
+    private var presenter: SearchPresenterInterface? = null
     private var adapter: SearchListAdapter? = null
     private var activityContext: Context? = null
     private var toolbar: Toolbar? = null
@@ -65,7 +64,7 @@ class SearchFragment() : Fragment(),
         recyclerView?.layoutManager = linearLayoutManager
         initScrollListener()
 
-        presenter = SearchFragmentPresenter(this)
+        presenter = SearchPresenter(this)
         adapter = SearchListAdapter(activityContext, presenter)
         recyclerView?.adapter = adapter
         presenter?.viewIsReady()

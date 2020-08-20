@@ -11,15 +11,17 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.application_ruslang.ruslang.*
-import com.application_ruslang.ruslang.presenter.PopularFragmentPresenter
+import com.application_ruslang.ruslang.interfaces.presenterInterface.PopularPresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.PopularFragmentInterface
+import com.application_ruslang.ruslang.presenter.PopularPresenter
 import com.application_ruslang.ruslang.view.adapter.PopularListAdapter
 
-class PopularFragment : Fragment() {
+class PopularFragment : Fragment(), PopularFragmentInterface {
 
     var reload: ImageButton? = null
     var recyclerView: RecyclerView? = null
     var adapter: PopularListAdapter? = null
-    var presenter: PopularFragmentPresenter? = null
+    var presenter: PopularPresenterInterface? = null
     var progressBar: ProgressBar? = null
 
     override fun onCreateView(
@@ -41,7 +43,7 @@ class PopularFragment : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = linearLayoutManager
 
-        presenter = PopularFragmentPresenter(this)
+        presenter = PopularPresenter(this)
         adapter = PopularListAdapter(context, presenter)
         recyclerView?.adapter = adapter
 
@@ -53,13 +55,13 @@ class PopularFragment : Fragment() {
         presenter?.viewIsReady()
     }
 
-    fun updateList(list: List<Phrase?>) {
+    override fun updateList(list: List<Phrase?>) {
         recyclerView?.visibility = View.VISIBLE
         adapter?.setList(list)
         progressBar?.visibility = View.GONE
     }
 
-    fun navigateToPhraseFragment(phrase: Phrase?) {
+    override fun navigateToPhraseFragment(phrase: Phrase?) {
         (context as FragmentActivity).supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.animator.ffrmnt_nmtr,

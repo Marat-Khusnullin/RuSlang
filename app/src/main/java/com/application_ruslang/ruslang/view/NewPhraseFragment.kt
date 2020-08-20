@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.R
+import com.application_ruslang.ruslang.interfaces.presenterInterface.NewPhrasePresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.NewPhraseFragmentInterface
 import com.application_ruslang.ruslang.presenter.NewPhrasePresenter
 import kotlinx.android.synthetic.main.fragment_new_phrase.*
 
-class NewPhraseFragment: Fragment(), View.OnClickListener {
+class NewPhraseFragment: Fragment(), View.OnClickListener, NewPhraseFragmentInterface {
 
-    private var presenter: NewPhrasePresenter? = null
+    private var presenter: NewPhrasePresenterInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,12 +33,12 @@ class NewPhraseFragment: Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            btn_new_done.id -> { checkPhrase()}
+            btn_new_done.id -> { checkPhrase() }
             btn_new_cancel.id -> { getActivity()?.supportFragmentManager?.popBackStack(); }
         }
     }
 
-    fun checkPhrase(){
+    private fun checkPhrase(){
         if(et_phrase_name.text.toString() == "") {
             et_phrase_name.setError("Имя не может быть пустым!")
             return

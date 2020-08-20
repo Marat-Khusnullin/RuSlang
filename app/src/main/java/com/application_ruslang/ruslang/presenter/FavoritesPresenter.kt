@@ -2,11 +2,14 @@ package com.application_ruslang.ruslang.presenter
 
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
+import com.application_ruslang.ruslang.interfaces.presenterInterface.FavoritesPresenterInterface
+import com.application_ruslang.ruslang.interfaces.viewInterface.FavoritesFragmentInterface
 import com.application_ruslang.ruslang.model.FirebaseModel
 import com.application_ruslang.ruslang.model.Model
 import com.application_ruslang.ruslang.view.FavoritesFragment
 
-class FavoritesPresenter(var view: FavoritesFragment): SubscribablePresenterInterface {
+class FavoritesPresenter(var view: FavoritesFragmentInterface) : SubscribablePresenterInterface,
+    FavoritesPresenterInterface {
 
     var model: Model
     var firebaseModel: FirebaseModel
@@ -18,12 +21,12 @@ class FavoritesPresenter(var view: FavoritesFragment): SubscribablePresenterInte
 
     }
 
-    fun viewIsReady() {
+    override fun viewIsReady() {
         model.loadFavoritesPhrases()
 
     }
 
-    fun removeFromFavorite(phrase: Phrase){
+    override fun removeFromFavorite(phrase: Phrase) {
         model.removeFromFavorites(phrase)
         firebaseModel.noticeRemovingFromFavorites(phrase)
     }
@@ -39,7 +42,6 @@ class FavoritesPresenter(var view: FavoritesFragment): SubscribablePresenterInte
     override fun popularPhrasesLoaded(list: List<Phrase>) {
 
     }
-
 
 
     override fun phraseTrendInfoLoaded(phrase: Phrase) {

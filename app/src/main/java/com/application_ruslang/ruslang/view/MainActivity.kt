@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         bottomNavigationView?.selectedItemId =
-            R.id.action_favorites
+            R.id.action_search
 
     }
 

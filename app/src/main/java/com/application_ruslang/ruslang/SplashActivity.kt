@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.application_ruslang.ruslang.model.Model
+import com.application_ruslang.ruslang.presenter.SplashPresenter
 import com.application_ruslang.ruslang.view.MainActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -13,12 +14,16 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-            //Model.instance
+
         Handler().postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            SplashPresenter(this).viewIsReady()
         }, SPLASH_TIMEOUT)
 
+    }
+
+    fun navigateToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
 

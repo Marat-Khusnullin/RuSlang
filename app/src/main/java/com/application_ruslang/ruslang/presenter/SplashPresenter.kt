@@ -1,15 +1,17 @@
 package com.application_ruslang.ruslang.presenter
 
+import android.os.Handler
 import com.application_ruslang.ruslang.Phrase
 import com.application_ruslang.ruslang.SplashActivity
 import com.application_ruslang.ruslang.interfaces.SubscribablePresenterInterface
-import com.application_ruslang.ruslang.model.Model
 
 class SplashPresenter(var view: SplashActivity): SubscribablePresenterInterface {
-
+    private val SPLASH_TIMEOUT: Long = 3000;
 
     fun viewIsReady() {
-        Model.instance.subscribeOnPhraseChange(this)
+        Handler().postDelayed({
+            view.navigateToMainActivity()
+        }, SPLASH_TIMEOUT)
 
     }
 
@@ -30,7 +32,7 @@ class SplashPresenter(var view: SplashActivity): SubscribablePresenterInterface 
     }
 
     override fun phraseListReady() {
-        view.navigateToMainActivity()
+
     }
 
 }

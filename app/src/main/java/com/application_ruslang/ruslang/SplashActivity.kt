@@ -10,15 +10,13 @@ import com.application_ruslang.ruslang.view.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SPLASH_TIMEOUT: Long = 1500;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        Handler().postDelayed({
-            SplashPresenter(this).viewIsReady()
-        }, SPLASH_TIMEOUT)
 
+        SplashPresenter(this).viewIsReady()
     }
 
     fun navigateToMainActivity() {
